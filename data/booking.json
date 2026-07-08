@@ -1,0 +1,37 @@
+{
+  "2026-07-06": {
+    "morning": true,
+    "afternoon": false,
+    "evening": true
+  },
+  "2026-07-07": {
+    "morning": false,
+    "afternoon": false,
+    "evening": true
+  },
+  "2026-07-08": {
+    "morning": true,
+    "afternoon": true,
+    "evening": false
+  },
+  "2026-07-09": {
+    "morning": true,
+    "afternoon": false,
+    "evening": false
+  },
+  "2026-07-10": {
+    "morning": false,
+    "afternoon": true,
+    "evening": true
+  },
+  "2026-07-11": {
+    "morning": true,
+    "afternoon": true,
+    "evening": true
+  },
+  "2026-07-12": {
+    "morning": false,
+    "afternoon": false,
+    "evening": false
+  }
+}
