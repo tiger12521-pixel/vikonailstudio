@@ -41,7 +41,13 @@ const bookingData = {
 };
 
 async function getBookingData() {
-  const response = await fetch("data/booking.json");
+  const week = formatDateKey(currentWeekStart);
+  const response = await fetch(`/api/booking?week=${week}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to load booking data");
+  }
+
   const data = await response.json();
   return data;
 }
