@@ -2,44 +2,6 @@ console.log("VIKA Nail Story loaded.");
 
 const weekDays = ["日", "一", "二", "三", "四", "五", "六"];
 
-const bookingData = {
-  "2026-07-06": {
-    morning: true,
-    afternoon: false,
-    evening: true,
-  },
-  "2026-07-07": {
-    morning: false,
-    afternoon: false,
-    evening: true,
-  },
-  "2026-07-08": {
-    morning: true,
-    afternoon: true,
-    evening: false,
-  },
-  "2026-07-09": {
-    morning: true,
-    afternoon: false,
-    evening: false,
-  },
-  "2026-07-10": {
-    morning: false,
-    afternoon: true,
-    evening: true,
-  },
-  "2026-07-11": {
-    morning: true,
-    afternoon: true,
-    evening: true,
-  },
-  "2026-07-12": {
-    morning: false,
-    afternoon: false,
-    evening: false,
-  },
-};
-
 async function getBookingData() {
   const week = formatDateKey(currentWeekStart);
   const response = await fetch(`/api/booking?week=${week}`);
@@ -52,7 +14,16 @@ async function getBookingData() {
   return data;
 }
 
-let currentWeekStart = new Date("2026-07-06T00:00:00");
+let currentWeekStart = getMonday(new Date());
+
+function getMonday(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
 
 const bookingMonth = document.getElementById("bookingMonth");
 const bookingRange = document.getElementById("bookingRange");
