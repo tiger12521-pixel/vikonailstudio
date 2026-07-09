@@ -4,7 +4,9 @@ const weekDays = ["日", "一", "二", "三", "四", "五", "六"];
 
 async function getBookingData() {
   const week = formatDateKey(currentWeekStart);
-  const response = await fetch(`/api/booking?week=${week}`);
+  const response = await fetch(`/api/booking?week=${week}`, {
+  cache: "no-store",
+  });
 
   if (!response.ok) {
     throw new Error("Failed to load booking data");
