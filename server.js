@@ -68,7 +68,6 @@ async function getCalendarEvents(timeMin, timeMax) {
 }
 
 app.get("/api/booking", async (req, res) => {
-  console.log("API 被呼叫了");
   try {
     const weekParam = req.query.week;
 
@@ -94,18 +93,13 @@ app.get("/api/booking", async (req, res) => {
 
     const events = await getCalendarEvents(weekStart, weekEnd);
 
-     console.log("====== Calendar Events ======");
-
-      events.forEach((event) => {
-        console.log("==============================");
-        console.log(JSON.stringify(event, null, 2));
-      });
+     
 
     events.forEach((event) => {
 
-  if (!event.start || !event.start.dateTime) {
-    return;
-  }
+      if (!event.start || !event.start.dateTime) {
+        return;
+    }
 
   // 沒有 Description 代表只是預留時段，不算已預約
   const hasBooking =
