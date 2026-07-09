@@ -8,8 +8,8 @@ export async function onRequestGet(context) {
     const weekParam = url.searchParams.get("week");
 
     const weekStart = weekParam
-      ? getMonday(new Date(`${weekParam}T00:00:00+08:00`))
-      : getMonday(new Date());
+        ? new Date(`${weekParam}T00:00:00+08:00`)
+        : getMonday(new Date());
 
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 7);
