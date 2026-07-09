@@ -67,7 +67,7 @@ function createSlot(label, isAvailable) {
 
 async function renderBookingWeek() {
   const dataSource = await getBookingData();
-  console.log("API 回傳資料：", dataSource);
+  console.log("booking data:", dataSource);
   const weekEnd = new Date(currentWeekStart);
   weekEnd.setDate(currentWeekStart.getDate() + 6);
 
@@ -82,7 +82,7 @@ async function renderBookingWeek() {
 
     const dateKey = formatDateKey(date);
     
-    console.log(dateKey, dataSource[dateKey]);
+    console.log("date data:", dateKey, dataSource[dateKey]);
 
     const dayData = dataSource[dateKey] || {
       morning: true,
