@@ -354,12 +354,30 @@
 
       <div class="booking-card">
         <div class="booking-header">
-          <button class="week-btn" id="prevWeekBtn">‹</button>
+          <button
+            class="week-btn"
+            id="prevWeekBtn"
+            type="button"
+            aria-label="上一週"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18L9 12L15 6"></path>
+            </svg>
+          </button>
           <div>
             <p class="booking-month" id="bookingMonth">2026 年 7 月</p>
             <p class="booking-range" id="bookingRange">07/06 - 07/12</p>
           </div>
-          <button class="week-btn" id="nextWeekBtn">›</button>
+          <button
+            class="week-btn"
+            id="nextWeekBtn"
+            type="button"
+            aria-label="下一週"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 6L15 12L9 18"></path>
+            </svg>
+          </button>
         </div>
 
         <div class="booking-list" id="bookingList">
@@ -369,8 +387,8 @@
         <p class="booking-note">
           綠色代表可預約，紅色代表該時段已有預約。實際可預約時間請以 LINE 確認為準。
         </p>
-      </div>
-    </section>
+        </div>
+      </section>
   </main>
   
   <script src="js/main.js?v=20260709-2"></script>
