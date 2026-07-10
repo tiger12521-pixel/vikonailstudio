@@ -12,43 +12,179 @@ body {
   background: #fff8f4;
 }
 
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
+/* #region Header */
 
-  width: 100%;
-  height: 64px;
-  padding: 0 20px;
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
-  background: rgba(255, 248, 244, 0.86);
+  min-height: 74px;
+  padding: 0 clamp(18px, 3vw, 42px);
+
+  background: rgba(255, 249, 245, 0.94);
+  border-bottom: 1px solid rgba(183, 137, 125, 0.08);
+
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(217, 139, 160, 0.18);
+
+  box-shadow:
+    0 6px 24px rgba(91, 65, 57, 0.035);
 }
 
 .site-logo {
-  color: #5a4a4a;
-  font-size: 16px;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 62px;
+  flex-shrink: 0;
+
+  color: #b78376;
   text-decoration: none;
 }
+
+.site-logo-mark {
+  width: 46px;
+  height: 54px;
+  overflow: visible;
+
+  transition:
+    transform 0.28s ease,
+    color 0.28s ease;
+}
+
+.site-logo:hover .site-logo-mark {
+  color: #94675f;
+  transform: translateY(-1px) scale(1.035);
+}
+
+.site-logo-mark .logo-outline,
+.site-logo-mark .logo-v,
+.site-logo-mark .logo-branch {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-logo-mark .logo-outline {
+  stroke-width: 4;
+  opacity: 0.92;
+}
+
+.site-logo-mark .logo-v {
+  stroke-width: 3;
+}
+
+.site-logo-mark .logo-branch {
+  stroke-width: 2;
+}
+
+.site-logo-mark .logo-leaf {
+  fill: rgba(183, 131, 118, 0.08);
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-logo-mark .logo-dot {
+  fill: currentColor;
+  stroke: none;
+  opacity: 0.9;
+}
+
+/* Header icons */
 
 .site-nav {
   display: flex;
-  gap: 14px;
+  align-items: center;
+  gap: 10px;
+
+  margin-left: auto;
 }
 
 .site-nav a {
-  color: #5a4a4a;
-  font-size: 14px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  color: #b78376;
+  border-radius: 50%;
   text-decoration: none;
+
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.25s ease;
 }
+
+.site-nav a:hover {
+  color: #94675f;
+  background: rgba(183, 131, 118, 0.1);
+  transform: translateY(-2px);
+}
+
+.site-nav svg {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-nav .site-nav-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.site-nav .site-nav-dot {
+  fill: currentColor;
+  stroke: none;
+}
+@media (max-width: 640px) {
+  .site-header {
+    min-height: 72px;
+    padding: 0 14px;
+  }
+
+  .site-logo {
+    width: 46px;
+    height: 58px;
+  }
+
+  .site-logo-mark {
+    width: 39px;
+    height: 47px;
+  }
+
+  .site-nav {
+    gap: 5px;
+  }
+
+  .site-nav a {
+    width: 34px;
+    height: 34px;
+  }
+
+  .site-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* #endregion */
 
 .home {
   min-height: 100vh;
