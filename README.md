@@ -62,3 +62,18 @@ npm run version:update -- v1.0.0
 ```
 
 正式發布前請閱讀 [`docs/RELEASE.md`](docs/RELEASE.md)，並逐項完成 [`notes/DEPLOY_CHECKLIST.md`](notes/DEPLOY_CHECKLIST.md)。
+
+
+## Release 快速入口
+
+本機測試與主要程式 Commit 完成後，可執行：
+
+```bash
+npm run release -- v1.0.1 --commit --push
+```
+
+這行會更新版本資訊、驗證資料、建立 metadata Commit、建立 Tag，並推送到 GitHub。完整說明請閱讀：
+
+- `docs/RELEASE.md`
+- `notes/COMMON_COMMANDS.md`
+- `notes/DEPLOY_CHECKLIST.md`

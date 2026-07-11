@@ -1,3 +1,18 @@
+# 更新紀錄
+
+## v1.0.1 - Release workflow maintenance
+
+### Added
+
+- 新增安全的 Release 自動化腳本。
+- 支援 metadata 準備、驗證、Commit、Tag 與 Push。
+- 新增 V1.0.1 發布說明。
+
+### Changed
+
+- 更新 Release、常用指令、部署檢查與疑難排解文件。
+- 專案版本更新為 1.0.1。
+
 # Changelog
 
 本專案採用 Semantic Versioning：`MAJOR.MINOR.PATCH`。

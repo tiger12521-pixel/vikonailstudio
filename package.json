@@ -1,6 +1,6 @@
 {
 	"name": "viconailstory",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Official website for Vico Nail Story.",
 	"main": "server.js",
 	"scripts": {
@@ -8,7 +8,8 @@
 		"version:update": "node scripts/update-version.js",
 		"version:check": "node scripts/check-version.js",
 		"build:metadata": "node scripts/update-version.js",
-		"test": "node --check server.js && node --check scripts/update-version.js && node --check scripts/check-version.js"
+		"test": "node --check server.js && node --check scripts/update-version.js && node --check scripts/check-version.js && node --check scripts/release.js",
+		"release": "node scripts/release.js"
 	},
 	"keywords": [],
 	"author": "",

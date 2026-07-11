@@ -74,3 +74,22 @@ Ctrl + C
 ```
 
 用途：停止 Node.js 本機伺服器，釋放 3200 Port。
+
+
+# 正式發布
+
+確認網站測試完成，並先將主要程式修改 Commit。
+
+```bash
+git status
+```
+
+用途：確認工作目錄乾淨。
+
+```bash
+npm run release -- v1.0.1 --commit --push
+```
+
+用途：完成版本資訊、檢查、Commit、Tag 與 Push。
+
+發布後到正式網站開啟 Console，確認 Version、Commit、Branch、Environment 與 Build。

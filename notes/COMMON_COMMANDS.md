@@ -473,3 +473,142 @@ git status
 ```
 
 用途：最後確認工作目錄乾淨。
+
+# 七、V1.0.1 Release 自動化
+
+## `npm run release -- v1.0.1`
+
+```bash
+npm run release -- v1.0.1
+```
+
+用途：只準備 `v1.0.1` 的版本資訊並執行檢查。
+
+什麼時候使用：
+
+- 想先查看自動產生的 Build 與 Commit 是否正確。
+- 想手動審查版本檔案後再決定是否 Commit。
+
+執行前條件：
+
+- 必須位於正式 Git Repository。
+- 必須在 `main` Branch。
+- `git status` 必須乾淨。
+- `v1.0.1` Tag 不可已存在。
+
+執行後會修改：
+
+- `version.json`
+- `package.json`
+- `package-lock.json`
+
+不會執行：
+
+- Git Commit。
+- Git Tag。
+- Git Push。
+
+注意：執行後工作目錄會出現修改。若要重新執行完整自動發布，需先自行 Commit 或還原這三個檔案。
+
+## `npm run release -- v1.0.1 --commit`
+
+```bash
+npm run release -- v1.0.1 --commit
+```
+
+用途：更新版本資訊、建立 metadata Commit，並建立本機 annotated Tag。
+
+什麼時候使用：
+
+- 本機測試完成。
+- 主要程式修改已先 Commit。
+- 希望先在本機確認 Tag，再手動 Push。
+
+執行後會發生：
+
+1. 執行專案測試。
+2. 更新三個版本檔案。
+3. 驗證 metadata。
+4. 建立 `chore: finalize v1.0.1 release metadata` Commit。
+5. 建立 `v1.0.1` Tag。
+
+不會執行：
+
+- Push 到 GitHub。
+- 觸發 Cloudflare 部署。
+
+完成後需手動執行：
+
+```bash
+git push origin main
+```
+
+用途：推送 metadata Commit。
+
+```bash
+git push origin v1.0.1
+```
+
+用途：推送版本 Tag。
+
+## `npm run release -- v1.0.1 --commit --push`
+
+```bash
+npm run release -- v1.0.1 --commit --push
+```
+
+用途：完整執行正式發布流程。
+
+什麼時候使用：
+
+- 本機畫面與功能均測試完成。
+- 所有正式修改已 Commit。
+- `git status` 顯示工作目錄乾淨。
+- 已確定要立即發布到 GitHub 與 Cloudflare。
+
+這一行會依序完成：
+
+1. 專案測試。
+2. 版本資訊更新。
+3. metadata 驗證。
+4. metadata Commit。
+5. Git Tag。
+6. Push `main`。
+7. Push Tag。
+8. 觸發 Cloudflare Pages 部署。
+
+注意事項：
+
+- 這是正式發布指令，不要在仍有未完成內容時執行。
+- 同版本 Tag 已存在時會中止，不會覆寫舊 Tag。
+- Push 需要網路正常，且本機 Git 已有 GitHub 權限。
+
+## `git tag --list`
+
+```bash
+git tag --list
+```
+
+用途：列出本機所有版本 Tag。
+
+使用時機：發布前確認版本號是否已使用。
+
+## `git show v1.0.1`
+
+```bash
+git show v1.0.1
+```
+
+用途：查看 `v1.0.1` Tag 指向的 Commit 與內容摘要。
+
+使用時機：確認 Tag 是否建立在正確版本。
+
+## `git ls-remote --tags origin`
+
+```bash
+git ls-remote --tags origin
+```
+
+用途：查看 GitHub 遠端 Repository 已存在的 Tag。
+
+使用時機：懷疑本機 Tag 已建立，但尚未成功推送到 GitHub。
