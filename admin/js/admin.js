@@ -1,3 +1,5 @@
+import { ensureGalleryLoaded, initializeGalleryAdmin } from "./gallery-admin.js";
+
 const API_URL = "/api/admin/promotions";
 const DEFAULT_LINE_URL = "https://line.me/ti/p/6Tmd0fH59r";
 
@@ -189,8 +191,21 @@ async function handleListAction(event) {
 	}
 }
 
+function initializeAdminTabs() {
+	document.querySelectorAll("[data-admin-tab]").forEach((button) => {
+		button.addEventListener("click", async () => {
+			const tab = button.dataset.adminTab;
+			document.querySelectorAll("[data-admin-tab]").forEach((item) => item.classList.toggle("is-active", item === button));
+			document.querySelectorAll("[data-admin-panel]").forEach((panel) => { panel.hidden = panel.dataset.adminPanel !== tab; });
+			if (tab === "gallery") await ensureGalleryLoaded();
+		});
+	});
+}
+
 function initialize() {
 	if (isLocalEnvironment()) elements.environmentNotice.hidden = false;
+	initializeAdminTabs();
+	initializeGalleryAdmin();
 	elements.createButton.addEventListener("click", () => openEditor());
 	elements.closeButton.addEventListener("click", closeEditor);
 	elements.cancelButton.addEventListener("click", closeEditor);

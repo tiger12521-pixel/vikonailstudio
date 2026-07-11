@@ -5,6 +5,7 @@
 import { initializeAppInfo } from "./config/app-info.js";
 import { initializeBooking } from "./components/booking.js";
 import { initializePromotion } from "./components/promotion.js";
+import { initializeHomeGallery } from "./components/gallery-home.js";
 
 /*
  * Starts each independent website feature.
@@ -13,6 +14,7 @@ import { initializePromotion } from "./components/promotion.js";
 async function initializeApplication() {
 	await initializeAppInfo();
 	await initializePromotion();
+	await initializeHomeGallery();
 	initializeBooking();
 }
 

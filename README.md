@@ -89,3 +89,13 @@ http://localhost:3200/admin/
 ```
 
 正式環境使用 Cloudflare Access Email One-time PIN 保護。設定說明：[`docs/CLOUDFLARE-CMS-SETUP.md`](docs/CLOUDFLARE-CMS-SETUP.md)。
+
+## V1.3.0 local Gallery test
+
+1. Run `npm install` (first time only).
+2. Run `node server.js`.
+3. Open `http://localhost:3200/`.
+4. Open `http://localhost:3200/gallery/` to test filters and the lightbox.
+5. Open `http://localhost:3200/admin/` and select `作品管理` to test upload, edit, featured status, visibility, sorting, and deletion.
+
+Local Gallery metadata is written to `data/gallery.json`, and uploaded images are written to `assets/uploads/gallery/`. Both paths are ignored by Git. In Cloudflare Pages, Gallery metadata and images use the `GALLERY_ASSETS` R2 binding instead.

@@ -4,31 +4,35 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="robots" content="noindex, nofollow" />
-	<title>活動管理｜Nail Story 薇可工作坊</title>
+	<title>網站管理｜Nail Story 薇可工作坊</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" />
 	<link
 		rel="stylesheet"
-		href="/admin/css/admin.css?v=1.2.0.1"
+		href="/admin/css/admin.css?v=1.3.0"
 	/>
 </head>
 <body>
 	<header class="admin-header">
 		<div>
 			<p class="admin-eyebrow">Vico Nail Story CMS</p>
-			<h1>最新活動管理</h1>
+			<h1>網站內容管理</h1>
 		</div>
 		<a class="admin-site-link" href="../" target="_blank" rel="noopener noreferrer">查看網站</a>
 	</header>
 
 	<main class="admin-main">
+		<nav class="admin-tabs" aria-label="後台功能">
+			<button class="admin-tab is-active" type="button" data-admin-tab="promotions">活動管理</button>
+			<button class="admin-tab" type="button" data-admin-tab="gallery">作品管理</button>
+		</nav>
 		<section class="admin-notice" id="environmentNotice" hidden>
 			<strong>本機開發模式</strong>
 			<span>Cloudflare Access 驗證僅在線上環境生效。本機可直接測試管理功能。</span>
 		</section>
 
-		<section class="admin-panel">
+		<section class="admin-panel" data-admin-panel="promotions">
 			<div class="admin-panel-heading">
 				<div>
 					<p class="admin-section-label">Activities</p>
@@ -39,6 +43,15 @@
 			<div class="promotion-list" id="promotionList" aria-live="polite">
 				<p class="empty-message">活動資料載入中...</p>
 			</div>
+		</section>
+
+		<section class="admin-panel" data-admin-panel="gallery" hidden>
+			<div class="admin-panel-heading">
+				<div><p class="admin-section-label">Gallery</p><h2>作品清單</h2></div>
+				<button class="button button-primary" id="createGalleryButton" type="button">＋ 上傳作品</button>
+			</div>
+			<div class="gallery-admin-toolbar"><label>顯示篩選 <select id="galleryStatusFilter"><option value="all">全部作品</option><option value="featured">精選作品</option><option value="active">公開作品</option><option value="hidden">隱藏作品</option></select></label></div>
+			<div class="gallery-admin-list" id="galleryAdminList" aria-live="polite"><p class="empty-message">切換至作品管理後載入資料。</p></div>
 		</section>
 	</main>
 
@@ -123,9 +136,28 @@
 		</form>
 	</dialog>
 
+
+	<dialog class="editor-dialog" id="galleryDialog">
+		<form class="editor-form" id="galleryForm">
+			<div class="editor-heading"><div><p class="admin-section-label">Gallery Editor</p><h2 id="galleryEditorTitle">上傳作品</h2></div><button class="icon-button" id="closeGalleryDialog" type="button" aria-label="關閉">×</button></div>
+			<input id="galleryId" name="id" type="hidden" />
+			<div class="form-grid">
+				<label class="field field-wide"><span>作品圖片 *</span><input id="galleryImage" name="image" type="file" accept="image/jpeg,image/png,image/webp" /><small>支援 JPG、PNG、WebP，單張上限 12 MB。編輯時可不重新選圖。</small></label>
+				<label class="field field-wide"><span>作品標題（可空）</span><input id="galleryTitle" name="title" type="text" maxlength="100" /></label>
+				<fieldset class="field field-wide category-field"><legend>風格分類（可多選）</legend><div class="category-options" id="galleryCategoryOptions"></div><label class="custom-category"><span>新增其他分類</span><input id="customGalleryCategories" type="text" placeholder="以逗號分隔，例如：夏日, 粉色系" /></label></fieldset>
+				<label class="field"><span>作品日期</span><input id="galleryDate" name="date" type="date" /></label>
+				<label class="field"><span>排序</span><input id="gallerySortOrder" name="sortOrder" type="number" min="0" step="1" value="0" /></label>
+				<label class="field field-wide"><span>美甲師 ID</span><input id="galleryArtistId" name="artistId" type="text" value="default" /><small>目前使用 default，已保留未來多位美甲師擴充。</small></label>
+			</div>
+			<div class="toggle-grid"><label class="toggle"><input id="galleryIsActive" name="isActive" type="checkbox" checked /><span>公開顯示</span></label><label class="toggle"><input id="galleryFeatured" name="featured" type="checkbox" /><span>⭐ 精選作品</span></label></div>
+			<p class="form-message" id="galleryFormMessage" role="status"></p>
+			<div class="editor-actions"><button class="button" id="cancelGalleryButton" type="button">取消</button><button class="button button-primary" id="saveGalleryButton" type="submit">儲存作品</button></div>
+		</form>
+	</dialog>
+
 	<script
 		type="module"
-		src="/admin/js/admin.js?v=1.2.0.1"
+		src="/admin/js/admin.js?v=1.3.0"
 	></script>
 </body>
 </html>

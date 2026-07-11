@@ -10,3 +10,7 @@ database_id = "REPLACE_WITH_D1_DATABASE_ID"
 [[r2_buckets]]
 binding = "PROMOTION_IMAGES"
 bucket_name = "vico-nail-story-promotions"
+
+[[r2_buckets]]
+binding = "GALLERY_ASSETS"
+bucket_name = "vico-nail-story-gallery"

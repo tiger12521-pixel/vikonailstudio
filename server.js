@@ -12,6 +12,9 @@ const CALENDAR_ID = "tina34252@gmail.com";
 const SERVICE_ACCOUNT_KEY_PATH =
 	"C:\\Users\\USER\\Documents\\vika-booking-ecb0317cc5b3.json";
 const PROMOTION_DATA_PATH = path.join(__dirname, "data", "promotions.json");
+const GALLERY_DATA_PATH = path.join(__dirname, "data", "gallery.json");
+const GALLERY_UPLOAD_DIRECTORY = path.join(__dirname, "assets", "uploads", "gallery");
+
 const PROMOTION_UPLOAD_DIRECTORY = path.join(
 	__dirname,
 	"assets",
@@ -20,6 +23,7 @@ const PROMOTION_UPLOAD_DIRECTORY = path.join(
 );
 
 fs.mkdirSync(PROMOTION_UPLOAD_DIRECTORY, { recursive: true });
+fs.mkdirSync(GALLERY_UPLOAD_DIRECTORY, { recursive: true });
 
 const upload = multer({
 	storage: multer.diskStorage({
@@ -35,6 +39,23 @@ const upload = multer({
 	fileFilter: (request, file, callback) => {
 		const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 		callback(allowedTypes.has(file.mimetype) ? null : new Error("Unsupported image type."), allowedTypes.has(file.mimetype));
+	}
+});
+
+
+const galleryUpload = multer({
+	storage: multer.diskStorage({
+		destination: GALLERY_UPLOAD_DIRECTORY,
+		filename: (request, file, callback) => {
+			const extension = path.extname(file.originalname).toLowerCase() || ".jpg";
+			callback(null, `${Date.now()}-${crypto.randomUUID()}${extension}`);
+		}
+	}),
+	limits: { fileSize: 12 * 1024 * 1024 },
+	fileFilter: (request, file, callback) => {
+		const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+		const isAllowed = allowedTypes.has(file.mimetype);
+		callback(isAllowed ? null : new Error("Unsupported image type."), isAllowed);
 	}
 });
 
@@ -136,6 +157,39 @@ const promotionUploadFields = upload.fields([
 	{ name: "mobileImage", maxCount: 1 }
 ]);
 
+function readGalleryData() {
+	const rawData = fs.readFileSync(GALLERY_DATA_PATH, "utf8");
+	const data = JSON.parse(rawData);
+	return { version: Number(data.version || 1), items: Array.isArray(data.items) ? data.items : [] };
+}
+
+function writeGalleryData(data) {
+	fs.writeFileSync(GALLERY_DATA_PATH, `${JSON.stringify(data, null, "\t")}\n`, "utf8");
+}
+
+function normalizeGalleryInput(body, existing = {}) {
+	const rawCategories = Array.isArray(body.category) ? body.category : (body.category ? [body.category] : []);
+	return {
+		title: String(body.title ?? existing.title ?? "").trim(),
+		category: rawCategories.length ? [...new Set(rawCategories.map((value) => String(value).trim()).filter(Boolean))] : (existing.category || []),
+		featured: toBoolean(body.featured),
+		isActive: toBoolean(body.isActive),
+		date: String(body.date ?? existing.date ?? new Date().toISOString().slice(0, 10)).trim(),
+		sortOrder: Number.parseInt(body.sortOrder ?? existing.sortOrder ?? 0, 10) || 0,
+		artistId: String(body.artistId ?? existing.artistId ?? "default").trim() || "default"
+	};
+}
+
+function sortGalleryItems(items) {
+	return [...items].sort((a, b) => (Number(a.sortOrder || 0) - Number(b.sortOrder || 0)) || String(b.date || "").localeCompare(String(a.date || "")) || String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+}
+
+function deleteLocalGalleryImage(item) {
+	if (!item?.image?.startsWith("/assets/uploads/gallery/")) return;
+	const filePath = path.join(__dirname, item.image.replace(/^\//, ""));
+	if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+}
+
 app.get("/api/booking", async (request, response) => {
 	try {
 		const weekStart = request.query.week
@@ -233,6 +287,49 @@ app.delete("/api/admin/promotions/:id", (request, response) => {
 	} catch (error) {
 		return response.status(500).json({ error: error.message });
 	}
+});
+
+app.get("/api/gallery", (request, response) => {
+	try {
+		let items = sortGalleryItems(readGalleryData().items).filter((item) => item.isActive !== false);
+		if (request.query.featured === "true") items = items.filter((item) => item.featured === true);
+		const limit = Number.parseInt(request.query.limit || "0", 10);
+		if (limit > 0) items = items.slice(0, limit);
+		response.set("Cache-Control", "no-store").json({ items });
+	} catch (error) { response.status(500).json({ error: error.message }); }
+});
+
+app.get("/api/admin/gallery", (request, response) => {
+	try { response.set("Cache-Control", "no-store").json({ items: sortGalleryItems(readGalleryData().items) }); }
+	catch (error) { response.status(500).json({ error: error.message }); }
+});
+
+app.post("/api/admin/gallery", galleryUpload.single("image"), (request, response) => {
+	try {
+		if (!request.file) return response.status(400).json({ error: "新增作品時必須上傳圖片。" });
+		const data = readGalleryData(); const id = `work-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`; const now = new Date().toISOString();
+		data.items.push({ id, ...normalizeGalleryInput(request.body), image: `/assets/uploads/gallery/${request.file.filename}`, createdAt: now, updatedAt: now });
+		writeGalleryData(data); return response.status(201).json({ id });
+	} catch (error) { return response.status(400).json({ error: error.message }); }
+});
+
+app.put("/api/admin/gallery/:id", galleryUpload.single("image"), (request, response) => {
+	try {
+		const data = readGalleryData(); const index = data.items.findIndex((item) => item.id === request.params.id);
+		if (index < 0) return response.status(404).json({ error: "找不到指定作品。" });
+		const existing = data.items[index]; let image = existing.image;
+		if (request.file) { deleteLocalGalleryImage(existing); image = `/assets/uploads/gallery/${request.file.filename}`; }
+		data.items[index] = { ...existing, ...normalizeGalleryInput(request.body, existing), image, updatedAt: new Date().toISOString() };
+		writeGalleryData(data); return response.json({ id: existing.id });
+	} catch (error) { return response.status(400).json({ error: error.message }); }
+});
+
+app.delete("/api/admin/gallery/:id", (request, response) => {
+	try {
+		const data = readGalleryData(); const index = data.items.findIndex((item) => item.id === request.params.id);
+		if (index < 0) return response.status(404).json({ error: "找不到指定作品。" });
+		const [removed] = data.items.splice(index, 1); deleteLocalGalleryImage(removed); writeGalleryData(data); return response.status(204).end();
+	} catch (error) { return response.status(500).json({ error: error.message }); }
 });
 
 app.get("/", (request, response) => {

@@ -1,3 +1,6 @@
 node_modules/
 dist/
 .env
+# Local Gallery CMS data (production metadata and images are stored in Cloudflare R2)
+data/gallery.json
+assets/uploads/gallery/

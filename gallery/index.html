@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>作品集｜Nail Story 薇可工作坊</title>
+	<meta name="description" content="瀏覽 Nail Story 薇可工作坊的美甲作品，依風格分類篩選。" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="/css/tokens.css" />
+	<link rel="stylesheet" href="/css/base.css" />
+	<link rel="stylesheet" href="/gallery/gallery.css?v=1.3.0" />
+</head>
+<body>
+	<header class="gallery-page-header">
+		<a class="back-link" href="/">← 回到首頁</a>
+		<div><p class="page-label">Gallery</p><h1>美甲作品集</h1></div>
+		<a class="booking-link" href="https://line.me/ti/p/6Tmd0fH59r" target="_blank" rel="noopener noreferrer">立即預約</a>
+	</header>
+	<main class="gallery-page-main">
+		<section class="gallery-intro"><p>選擇喜歡的風格，尋找屬於你的指尖靈感。</p></section>
+		<section aria-labelledby="filterTitle">
+			<div class="filter-heading"><h2 id="filterTitle">作品分類</h2><button id="clearFilters" type="button">清除篩選</button></div>
+			<div class="filter-list" id="galleryFilters" aria-label="作品分類篩選"></div>
+		</section>
+		<p class="result-count" id="galleryResultCount"></p>
+		<div class="gallery-page-grid" id="galleryPageGrid" aria-live="polite"><p class="gallery-empty">作品載入中...</p></div>
+	</main>
+	<dialog class="lightbox" id="galleryLightbox">
+		<div class="lightbox-inner">
+			<button class="lightbox-close" id="lightboxClose" type="button" aria-label="關閉">×</button>
+			<button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="上一張">‹</button>
+			<figure><img id="lightboxImage" src="" alt="" /><figcaption id="lightboxCaption"></figcaption></figure>
+			<button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="下一張">›</button>
+		</div>
+	</dialog>
+	<script type="module" src="/gallery/gallery.js?v=1.3.0"></script>
+</body>
+</html>
