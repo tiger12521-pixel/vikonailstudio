@@ -1,0 +1,93 @@
+/* #region Design Tokens */
+/*==================================================
+	Design Tokens
+
+	網站共用的顏色、圓角、陰影與動畫時間集中放在這裡。
+	日後想調整整體品牌色或卡片質感，優先修改本檔案。
+
+	注意：
+	1. 變數名稱描述用途，不描述特定頁面。
+	2. 目前數值完全沿用原版，避免重構後產生視覺差異。
+==================================================*/
+
+:root {
+	/*--------------------------------------------------
+		Brand Colors
+
+		主要品牌粉棕色，使用於 Logo、圖示、裝飾線與按鈕。
+	--------------------------------------------------*/
+	--color-brand-100: #fff8f4;
+	--color-brand-200: #fffaf7;
+	--color-brand-300: #f3e8df;
+	--color-brand-500: #b78376;
+	--color-brand-550: #b78275;
+	--color-brand-600: #b47f72;
+	--color-brand-650: #b08b7c;
+	--color-brand-700: #a87870;
+	--color-brand-750: #9d7068;
+	--color-brand-800: #94675f;
+
+	/*--------------------------------------------------
+		Text Colors
+
+		由深至淺管理標題、內文、輔助文字與按鈕文字。
+	--------------------------------------------------*/
+	--color-text-primary: #5a4a4a;
+	--color-text-heading: #574747;
+	--color-text-brand: #735751;
+	--color-text-body: #6f5e58;
+	--color-text-muted: #806b64;
+	--color-text-soft: #8a7168;
+	--color-text-button: #66524d;
+	--color-text-button-mobile: #604d49;
+	--color-white: #ffffff;
+
+	/*--------------------------------------------------
+		Price Colors
+
+		價目表專用粉色。未來若要更換價目表主色，可從此處修改。
+	--------------------------------------------------*/
+	--color-price-primary: #d98ba0;
+	--color-price-strong: #c96f8a;
+
+	/*--------------------------------------------------
+		Booking Status Colors
+
+		可預約使用綠色；已預約使用紅色。
+	--------------------------------------------------*/
+	--color-slot-available-text: #2f6b4f;
+	--color-slot-available-bg: #e8f6ef;
+	--color-slot-booked-text: #9b4f5f;
+	--color-slot-booked-bg: #fde8ee;
+
+	/*--------------------------------------------------
+		Border Radius
+
+		常用圓角集中管理，數值越大代表外觀越柔和。
+	--------------------------------------------------*/
+	--radius-small: 14px;
+	--radius-medium: 18px;
+	--radius-large: 24px;
+	--radius-hero: 32px;
+	--radius-pill: 999px;
+	--radius-circle: 50%;
+
+	/*--------------------------------------------------
+		Animation Timing
+
+		互動動畫的共用時間。修改時應同時檢查桌機滑鼠操作感。
+	--------------------------------------------------*/
+	--duration-fast: 0.2s;
+	--duration-normal: 0.25s;
+	--duration-slow: 0.28s;
+
+	/*--------------------------------------------------
+		Layout Breakpoints (Documentation Only)
+
+		CSS 變數不能直接放入 @media 條件，因此此處只作為規範說明：
+		Mobile: 640px and below
+		Gallery single column: 768px and below
+	--------------------------------------------------*/
+}
+
+/* #endregion */

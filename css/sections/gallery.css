@@ -1,0 +1,80 @@
+/* #region Gallery */
+/*==================================================
+	Gallery Section
+
+	Section heading, artwork grid, image cards, hover
+	effects, and narrow-screen layout.
+==================================================*/
+
+/*--------------------------------------------------
+	維護索引
+
+	.gallery-section	作品集整區背景與外部留白
+	.section-label		各區共用的小型英文標籤
+	.gallery-section h2	作品集主標題
+	.gallery-grid		圖片欄數、間距與最大寬度
+	.gallery-grid img	圖片比例、圓角、陰影與 Hover
+	@media <= 768px	手機／窄螢幕單欄排版
+--------------------------------------------------*/
+
+.gallery-section {
+	padding: 120px 8vw;
+	background: var(--color-brand-200);
+}
+
+.section-label {
+	margin: 0;
+	text-align: center;
+	color: var(--color-brand-650);
+	letter-spacing: 0.25em;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+.gallery-section h2 {
+	margin: 12px 0 56px;
+	text-align: center;
+	color: var(--color-text-heading);
+	font-size: 42px;
+}
+
+.gallery-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 28px;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.gallery-grid img {
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: contain;
+	background: #fff;
+	border-radius: var(--radius-large);
+	cursor: pointer;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+	transition: 0.35s ease;
+}
+
+.gallery-grid img:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 22px 48px rgba(0, 0, 0, 0.16);
+}
+
+@media (max-width: 768px) {
+	.gallery-section {
+		padding: 80px 24px;
+	}
+
+	.gallery-grid {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.gallery-section h2 {
+		font-size: 34px;
+	}
+}
+
+/* #endregion */

@@ -1,0 +1,86 @@
+/* #region Price */
+/*==================================================
+	Price Section
+
+	Price section background, cards, rows, notes,
+	and the foot-service warning badge.
+==================================================*/
+
+/*--------------------------------------------------
+	維護索引
+
+	.price-section	價目表整區背景與留白
+	.price-card	每一張價目分類卡片
+	.price-card h3	卡片分類標題
+	.price-row	單一服務名稱與價格列
+	.price-note	價格列下方的小型補充說明
+	.price-warning	足部加價提示膠囊
+--------------------------------------------------*/
+
+.price-section {
+	padding: 64px 20px;
+	background: linear-gradient(180deg, var(--color-brand-100) 0%, var(--color-brand-300) 100%);
+	text-align: center;
+}
+
+.price-section h2 {
+	margin: 0 0 28px;
+	font-size: 28px;
+}
+
+.price-card {
+	max-width: 520px;
+	margin: 0 auto 18px;
+	padding: 22px 18px;
+	border-radius: var(--radius-large);
+	background: rgba(255, 255, 255, 0.82);
+	box-shadow: 0 12px 30px rgba(90, 74, 74, 0.1);
+	border: 1px solid rgba(217, 139, 160, 0.18);
+	text-align: left;
+}
+
+.price-card h3 {
+	margin: 0 0 16px;
+	color: var(--color-price-primary);
+	font-size: 20px;
+	text-align: center;
+	letter-spacing: 0.08em;
+}
+
+.price-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 10px 0;
+	border-bottom: 1px dashed rgba(217, 139, 160, 0.28);
+	font-size: 15px;
+}
+
+.price-row span {
+	color: var(--color-text-primary);
+}
+
+.price-row strong {
+	flex-shrink: 0;
+	color: var(--color-price-strong);
+}
+
+.price-note {
+	margin: -4px 0 6px;
+	color: rgba(90, 74, 74, 0.68);
+	font-size: 13px;
+	text-align: right;
+}
+
+.price-warning {
+	max-width: 520px;
+	margin: 20px auto 0;
+	padding: 14px 18px;
+	border-radius: var(--radius-pill);
+	color: var(--color-white);
+	background: var(--color-price-primary);
+	font-weight: 700;
+	box-shadow: 0 8px 20px rgba(217, 139, 160, 0.28);
+}
+
+/* #endregion */

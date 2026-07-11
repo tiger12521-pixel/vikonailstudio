@@ -1,0 +1,1254 @@
+html {
+    scroll-behavior: smooth;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  color: #5a4a4a;
+  background: #fff8f4;
+}
+
+/* #region Header */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+
+  min-height: 74px;
+  padding: 0 clamp(18px, 3vw, 42px);
+
+  background: rgba(255, 249, 245, 0.94);
+  border-bottom: 1px solid rgba(183, 137, 125, 0.08);
+
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 6px 24px rgba(91, 65, 57, 0.035);
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 62px;
+  flex-shrink: 0;
+
+  color: #b78376;
+  text-decoration: none;
+}
+
+.site-logo-mark {
+  width: 46px;
+  height: 54px;
+  overflow: visible;
+
+  transition:
+    transform 0.28s ease,
+    color 0.28s ease;
+}
+
+.site-logo:hover .site-logo-mark {
+  color: #94675f;
+  transform: translateY(-1px) scale(1.035);
+}
+
+.site-logo-mark .logo-outline,
+.site-logo-mark .logo-v,
+.site-logo-mark .logo-branch {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-logo-mark .logo-outline {
+  stroke-width: 4;
+  opacity: 0.92;
+}
+
+.site-logo-mark .logo-v {
+  stroke-width: 3;
+}
+
+.site-logo-mark .logo-branch {
+  stroke-width: 2;
+}
+
+.site-logo-mark .logo-leaf {
+  fill: rgba(183, 131, 118, 0.08);
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-logo-mark .logo-dot {
+  fill: currentColor;
+  stroke: none;
+  opacity: 0.9;
+}
+
+/* Header icons */
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-left: auto;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  color: #b78376;
+  border-radius: 50%;
+  text-decoration: none;
+
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.site-nav a:hover {
+  color: #94675f;
+  background: rgba(183, 131, 118, 0.1);
+  transform: translateY(-2px);
+}
+
+.site-nav svg {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-nav .site-nav-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.site-nav .site-nav-dot {
+  fill: currentColor;
+  stroke: none;
+}
+@media (max-width: 640px) {
+  .site-header {
+    min-height: 72px;
+    padding: 0 14px;
+  }
+
+  .site-logo {
+    width: 46px;
+    height: 58px;
+  }
+
+  .site-logo-mark {
+    width: 39px;
+    height: 47px;
+  }
+
+  .site-nav {
+    gap: 5px;
+  }
+
+  .site-nav a {
+    width: 34px;
+    height: 34px;
+  }
+
+  .site-nav svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* #endregion */
+
+.home {
+  min-height: 100vh;
+}
+
+/* #region Hero */
+/* =========================
+   Hero v3
+========================= */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  padding: 96px 0 56px clamp(56px, 8vw, 128px);
+
+  background-image:
+    radial-gradient(
+      circle at 18% 42%,
+      rgba(244, 220, 205, 0.18),
+      transparent 38%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 248, 242, 0.28) 0%,
+      rgba(255, 248, 242, 0.14) 35%,
+      rgba(255, 248, 242, 0.04) 68%,
+      rgba(255, 248, 242, 0) 100%
+    ),
+    url("/assets/images/Vika Nail_background_pc.png");
+
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 244, 238, 0.03)
+    );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 580px);
+  box-sizing: border-box;
+  padding: 34px 36px 38px;
+  border-radius: 32px;
+
+  background: rgba(255, 252, 249, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+
+  box-shadow:
+    0 24px 60px rgba(91, 65, 57, 0.05);
+
+  animation: heroFadeUp 0.9s ease both;
+}
+
+/* =========================
+   Hero Logo
+========================= */
+
+.hero-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 0 26px;
+  color: #b47f72;
+
+  animation: logoReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s both;
+}
+
+.hero-logo-main {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+
+  padding-right: 42px;
+}
+
+.hero-logo-script {
+  display: block;
+
+  color: #b47f72;
+
+  font-family: "Allura", cursive;
+  font-size: clamp(72px, 6.2vw, 106px);
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: 0.01em;
+
+  text-shadow:
+    0 8px 24px rgba(119, 76, 66, 0.08);
+}
+
+.hero-logo-flower {
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+
+  width: 38px;
+  height: 52px;
+
+  overflow: visible;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  opacity: 0.88;
+  transform-origin: bottom center;
+
+  animation: flowerSway 4.5s ease-in-out 1.2s infinite alternate;
+}
+
+.hero-logo-flower circle {
+  fill: currentColor;
+  stroke: none;
+}
+
+.hero-logo-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  width: 100%;
+  margin-top: 17px;
+}
+
+.hero-logo-line {
+  display: block;
+
+  width: 70px;
+  height: 1px;
+
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.hero-logo-label {
+  color: currentColor;
+
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  white-space: nowrap;
+}
+
+/* =========================
+   Hero Text
+========================= */
+
+.hero-kicker {
+  margin: 0 0 18px;
+
+  color: #806b64;
+
+  font-size: 17px;
+  line-height: 1.8;
+  letter-spacing: 0.13em;
+  font-weight: 400;
+
+  animation: heroFadeUp 0.9s ease 0.16s both;
+}
+
+/* =========================
+   Chinese Brand Logo
+========================= */
+
+.hero-brand-cn {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 34px auto 34px;
+  align-items: center;
+  justify-content: start;
+  column-gap: 14px;
+
+  width: fit-content;
+  margin: 2px 0 22px;
+  
+
+  color: #735751;
+
+  animation:
+    heroTitleIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+}
+
+.hero-brand-text {
+  display: block;
+
+  font-family:
+    "Noto Serif TC",
+    "Source Han Serif TC",
+    "Songti TC",
+    serif;
+
+  font-size: clamp(27px, 2.15vw, 36px);
+  line-height: 1.5;
+  font-weight: 500;
+
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+
+  text-shadow:
+    0 8px 24px rgba(84, 60, 52, 0.07);
+}
+
+.hero-brand-leaf {
+  width: 34px;
+  height: 30px;
+
+  overflow: visible;
+
+  fill: none;
+  stroke: #b78275;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  opacity: 0.86;
+}
+
+.hero-brand-leaf-left {
+  transform: rotate(-6deg);
+}
+
+.hero-brand-leaf-right {
+  transform: scaleX(-1) rotate(-6deg);
+}
+
+.hero-brand-ornament {
+  grid-column: 1 / -1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  width: 100%;
+  margin-top: 8px;
+
+  color: #b78275;
+}
+
+.hero-brand-ornament > span {
+  display: block;
+  width: 92px;
+  height: 1px;
+
+  background: currentColor;
+  opacity: 0.52;
+}
+
+.hero-brand-ornament svg {
+  width: 26px;
+  height: 14px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  opacity: 0.8;
+}
+
+.description {
+  max-width: 500px;
+  margin: 28px 0 34px;
+
+  color: #6f5e58;
+
+  font-size: 17px;
+  line-height: 2;
+  letter-spacing: 0.065em;
+  font-weight: 400;
+
+  animation: heroFadeUp 0.9s ease 0.34s both;
+}
+.hero-brand-slogan {
+
+    grid-column: 1 / -1;
+
+    margin-top: 6px;
+
+    text-align: center;
+
+    color: #8a7168;
+
+    font-size: 13px;
+
+    letter-spacing: .12em;
+
+    line-height: 1.8;
+
+    font-weight: 400;
+
+    opacity: .92;
+
+}
+
+/* =========================
+   Hero Buttons
+========================= */
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+
+  animation: heroFadeUp 0.9s ease 0.44s both;
+}
+
+.hero-link {
+  position: relative;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 112px;
+  height: 46px;
+  padding: 0 26px;
+  box-sizing: border-box;
+  border-radius: 999px;
+
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+
+  transition:
+    transform 0.28s ease,
+    background-color 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.hero-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.42) 45%,
+      transparent 70%
+    );
+
+  transform: translateX(-120%);
+  transition: transform 0.65s ease;
+}
+
+.hero-link:hover::after {
+  transform: translateX(120%);
+}
+
+.hero-link:first-child {
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #b98b7f,
+      #9d7068
+    );
+
+  border: 1px solid rgba(157, 112, 104, 0.8);
+
+  box-shadow:
+    0 10px 22px rgba(91, 65, 57, 0.2);
+}
+
+.hero-link:first-child:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 14px 30px rgba(91, 65, 57, 0.25);
+}
+
+.hero-link:last-child {
+  color: #66524d;
+
+  background:
+    rgba(255, 255, 255, 0.5);
+
+  border:
+    1px solid rgba(102, 82, 77, 0.18);
+
+  box-shadow:
+    0 8px 20px rgba(91, 65, 57, 0.06);
+
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.hero-link:last-child:hover {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(102, 82, 77, 0.3);
+
+  transform: translateY(-3px);
+}
+
+/* =========================
+   Hero Animations
+========================= */
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+    filter: blur(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes logoReveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes flowerSway {
+  from {
+    transform: rotate(-1.5deg);
+  }
+
+  to {
+    transform: rotate(2deg);
+  }
+}
+
+/* =========================
+   Hero Mobile
+========================= */
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: auto;
+    padding: 44px 14px 32px;
+
+    background-size: cover;
+    background-position: center top;
+  }
+
+  .hero-content {
+    padding: 22px 20px 24px;
+    border-radius: 24px;
+  }
+
+  .hero-logo {
+    margin-bottom: 20px;
+  }
+
+  .hero-logo-script {
+    font-size: clamp(56px, 16.5vw, 68px);
+  }
+
+  .hero-logo-sub {
+    margin-top: 11px;
+  }
+
+  .hero-brand-cn {
+    margin: 0 0 10px;
+    font-size: clamp(20px, 5.9vw, 25px);
+    letter-spacing: 0.1em;
+  }
+
+  .hero-kicker {
+    margin-bottom: 16px;
+  }
+
+  .description {
+    margin-bottom: 22px;
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .hero-actions {
+    gap: 9px;
+  }
+
+  .hero-link {
+    height: 42px;
+    padding: 0 19px;
+    font-size: 13.5px;
+  }
+  .hero-brand-cn {
+  grid-template-columns: 24px auto 24px;
+  column-gap: 8px;
+
+  width: 100%;
+  margin: 0 0 19px;
+}
+
+.hero-brand-text {
+  font-size: clamp(21px, 6.2vw, 27px);
+  line-height: 1.5;
+  letter-spacing: 0.13em;
+}
+
+.hero-brand-leaf {
+  width: 24px;
+  height: 24px;
+}
+
+.hero-brand-ornament {
+  gap: 10px;
+  margin-top: 7px;
+}
+
+.hero-brand-ornament > span {
+  width: 58px;
+}
+
+.hero-brand-ornament svg {
+  width: 22px;
+  height: 12px;
+}
+}
+
+/* =========================
+   Hero Mobile
+========================= */
+
+@media (max-width: 640px) {
+  .hero {
+    min-height:  max(calc(100svh - 72px), 850px);
+    align-items: flex-start;
+
+    padding: 44px 14px 32px;
+
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(255, 250, 246, 0.12) 0%,
+        rgba(255, 250, 246, 0.06) 45%,
+        rgba(255, 250, 246, 0.22) 100%
+      ),
+      url("/assets/images/Vika Nail_background_mobile.png");
+
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  .hero::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 244, 238, 0.01)
+      );
+  }
+
+  .hero-content {
+    margin-top: 60px;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+
+    padding: 24px 20px 28px;
+    border-radius: 26px;
+
+    background: rgba(255, 249, 244, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+
+    box-shadow:
+      0 16px 38px rgba(91, 65, 57, 0.04);
+  }
+
+  /* Logo */
+
+  .hero-logo {
+    display: flex;
+    align-items: flex-start;
+
+    width: 100%;
+    margin: 0 0 25px;
+  }
+
+  .hero-logo-main {
+    padding-right: 30px;
+  }
+
+  .hero-logo-script {
+    font-size: clamp(58px, 17vw, 72px);
+    line-height: 0.8;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .hero-logo-flower {
+    right: 0;
+    bottom: -1px;
+
+    width: 26px;
+    height: 38px;
+  }
+
+  .hero-logo-sub {
+    justify-content: flex-start;
+    gap: 11px;
+
+    width: auto;
+    margin-top: 14px;
+  }
+
+  .hero-logo-line {
+    width: 40px;
+  }
+
+  .hero-logo-label {
+    font-size: 9px;
+    letter-spacing: 0.28em;
+  }
+
+  /* Chinese brand name */
+
+  .hero-brand-cn {
+    margin: 0 0 13px;
+
+    color: #594846;
+
+    font-family:
+      "Noto Serif TC",
+      "Source Han Serif TC",
+      "Songti TC",
+      serif;
+
+    font-size: clamp(21px, 6.4vw, 27px);
+    line-height: 1.55;
+    letter-spacing: 0.11em;
+    font-weight: 500;
+
+    white-space: nowrap;
+  }
+
+  .hero-kicker {
+    margin: 0 0 20px;
+
+    font-size: 13.5px;
+    line-height: 1.7;
+    letter-spacing: 0.07em;
+  }
+
+  .description {
+    max-width: 100%;
+    margin: 0 0 26px;
+
+    font-size: 12px;
+    line-height: 1.9;
+    letter-spacing: 0.025em;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .hero-link {
+    flex: 0 1 auto;
+
+    min-width: 0;
+    height: 44px;
+    padding: 0 21px;
+
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+  }
+
+  .hero-link:first-child {
+    background:
+      linear-gradient(
+        135deg,
+        #b8877d,
+        #a87870
+      );
+
+    box-shadow:
+      0 9px 20px rgba(91, 65, 57, 0.17);
+  }
+
+  .hero-link:last-child {
+    color: #604d49;
+
+    background: rgba(255, 255, 255, 0.44);
+    border: 1px solid rgba(96, 77, 73, 0.14);
+
+    box-shadow:
+      0 7px 16px rgba(91, 65, 57, 0.04);
+  }
+}  
+  
+
+/* =========================
+   Reduced Motion
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-logo,
+  .hero-kicker,
+  .hero h1,
+  .description,
+  .hero-actions,
+  .hero-logo-flower {
+    animation: none;
+  }
+
+  .hero-link {
+    transition: none;
+  }
+
+  .hero-link::after {
+    display: none;
+  }
+}
+/* #endregion */
+
+/* #region Gallery */
+/* =========================
+   Gallery
+========================= */
+
+.gallery-section {
+  padding: 120px 8vw;
+  background: #fffaf7;
+}
+
+.section-label {
+  margin: 0;
+  text-align: center;
+  color: #b08b7c;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.gallery-section h2 {
+  margin: 12px 0 56px;
+  text-align: center;
+  color: #574747;
+  font-size: 42px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transition: 0.35s ease;
+}
+
+.gallery-grid img:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.16);
+}
+
+@media (max-width: 768px) {
+  .gallery-section {
+    padding: 80px 24px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .gallery-section h2 {
+    font-size: 34px;
+  }
+}
+/* #endregion */
+
+
+/* =========================
+   Price
+========================= */
+
+.price-section {
+  padding: 64px 20px;
+  background: linear-gradient(180deg, #fff8f4 0%, #f3e8df 100%);
+  text-align: center;
+}
+
+.price-section h2 {
+  margin: 0 0 28px;
+  font-size: 28px;
+}
+
+.price-card {
+  max-width: 520px;
+  margin: 0 auto 18px;
+  padding: 22px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 12px 30px rgba(90, 74, 74, 0.1);
+  border: 1px solid rgba(217, 139, 160, 0.18);
+  text-align: left;
+}
+
+.price-card h3 {
+  margin: 0 0 16px;
+  color: #d98ba0;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(217, 139, 160, 0.28);
+  font-size: 15px;
+}
+
+.price-row span {
+  color: #5a4a4a;
+}
+
+.price-row strong {
+  flex-shrink: 0;
+  color: #c96f8a;
+}
+
+.price-note {
+  margin: -4px 0 6px;
+  color: rgba(90, 74, 74, 0.68);
+  font-size: 13px;
+  text-align: right;
+}
+
+.price-warning {
+  max-width: 520px;
+  margin: 20px auto 0;
+  padding: 14px 18px;
+  border-radius: 999px;
+  color: white;
+  background: #d98ba0;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(217, 139, 160, 0.28);
+}
+
+.booking-list {
+  display: grid;
+  gap: 10px;
+}
+
+.booking-day {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 12px;
+  border-radius: 18px;
+  background: #fff8f4;
+  border: 1px solid rgba(217, 139, 160, 0.14);
+}
+
+.booking-date {
+  color: #5a4a4a;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.booking-date strong {
+  display: block;
+  font-size: 15px;
+}
+
+.booking-date span {
+  color: rgba(90, 74, 74, 0.68);
+}
+
+.booking-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.booking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 0 18px;
+  margin-bottom: 20px;
+}
+
+.booking-header > div {
+  flex: 1;
+  text-align: center;
+}
+
+.booking-month {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.booking-range {
+  margin: 4px 0 0;
+  white-space: nowrap;
+}
+
+.week-btn svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.week-btn {
+  flex: 0 0 auto;
+
+  width: 42px;
+  height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  border: 1px solid rgba(183, 131, 118, 0.2);
+  border-radius: 50%;
+
+  color: #a87870;
+  background: rgba(255, 255, 255, 0.72);
+
+  font-size: 26px;
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+
+  box-shadow: 0 8px 18px rgba(91, 65, 57, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.week-btn:hover {
+  color: #fff;
+  background: #b8877d;
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 22px rgba(91, 65, 57, 0.16);
+}
+
+.week-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.slot-dot {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.slot-text {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.slot.available {
+  color: #2f6b4f;
+  background: #e8f6ef;
+}
+
+.slot.booked {
+  color: #9b4f5f;
+  background: #fde8ee;
+}
+
+
+
+
+

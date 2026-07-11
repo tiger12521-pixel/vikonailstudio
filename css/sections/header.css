@@ -1,0 +1,194 @@
+/* #region Header */
+/*==================================================
+	Header
+
+	Sticky navigation bar, brand mark, and quick-link icons.
+==================================================*/
+
+/*--------------------------------------------------
+	維護索引
+
+	.site-header		Header 高度、位置、背景、左右留白
+	.site-logo			左側 Logo 可點擊區域尺寸
+	.site-logo-mark		Logo SVG 本體尺寸與動畫
+	.site-nav			右側圖示群組間距
+	.site-nav a		每個導覽按鈕的尺寸與 Hover
+	@media <= 640px	手機版 Header 尺寸
+--------------------------------------------------*/
+
+/*--------------------------------------------------
+	Header Container
+--------------------------------------------------*/
+
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+
+	display: flex;
+	align-items: center;
+
+	min-height: 74px;
+	padding: 0 clamp(18px, 3vw, 42px);
+
+	background: rgba(255, 249, 245, 0.94);
+	border-bottom: 1px solid rgba(183, 137, 125, 0.08);
+
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+
+	box-shadow: 0 6px 24px rgba(91, 65, 57, 0.035);
+}
+
+.site-logo {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 54px;
+	height: 62px;
+	flex-shrink: 0;
+
+	color: var(--color-brand-500);
+	text-decoration: none;
+}
+
+.site-logo-mark {
+	width: 46px;
+	height: 54px;
+	overflow: visible;
+
+	transition:
+		transform var(--duration-slow) ease,
+		color var(--duration-slow) ease;
+}
+
+.site-logo:hover .site-logo-mark {
+	color: var(--color-brand-800);
+	transform: translateY(-1px) scale(1.035);
+}
+
+.site-logo-mark .logo-outline,
+.site-logo-mark .logo-v,
+.site-logo-mark .logo-branch {
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.site-logo-mark .logo-outline {
+	stroke-width: 4;
+	opacity: 0.92;
+}
+
+.site-logo-mark .logo-v {
+	stroke-width: 3;
+}
+
+.site-logo-mark .logo-branch {
+	stroke-width: 2;
+}
+
+.site-logo-mark .logo-leaf {
+	fill: rgba(183, 131, 118, 0.08);
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.site-logo-mark .logo-dot {
+	fill: currentColor;
+	stroke: none;
+	opacity: 0.9;
+}
+
+/*--------------------------------------------------
+	Quick-Link Icons
+--------------------------------------------------*/
+
+.site-nav {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	margin-left: auto;
+}
+
+.site-nav a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 38px;
+	height: 38px;
+
+	color: var(--color-brand-500);
+	border-radius: var(--radius-circle);
+	text-decoration: none;
+
+	transition:
+		color var(--duration-normal) ease,
+		background-color var(--duration-normal) ease,
+		transform var(--duration-normal) ease;
+}
+
+.site-nav a:hover {
+	color: var(--color-brand-800);
+	background: rgba(183, 131, 118, 0.1);
+	transform: translateY(-2px);
+}
+
+.site-nav svg {
+	width: 20px;
+	height: 20px;
+
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.75;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.site-nav .site-nav-fill {
+	fill: currentColor;
+	stroke: none;
+}
+
+.site-nav .site-nav-dot {
+	fill: currentColor;
+	stroke: none;
+}
+@media (max-width: 640px) {
+	.site-header {
+		min-height: 72px;
+		padding: 0 14px;
+	}
+
+	.site-logo {
+		width: 46px;
+		height: 58px;
+	}
+
+	.site-logo-mark {
+		width: 39px;
+		height: 47px;
+	}
+
+	.site-nav {
+		gap: 5px;
+	}
+
+	.site-nav a {
+		width: 34px;
+		height: 34px;
+	}
+
+	.site-nav svg {
+		width: 20px;
+		height: 20px;
+	}
+}
+
+/* #endregion */

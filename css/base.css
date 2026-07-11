@@ -1,0 +1,40 @@
+/* #region Global Base */
+/*==================================================
+	Global Base
+
+	Page-wide defaults shared by every section.
+==================================================*/
+
+/*--------------------------------------------------
+	維護索引
+
+	html		頁面錨點捲動方式
+	*		全站盒模型計算方式
+	body		全站預設字型、文字色與背景色
+	.home		主要內容最小高度
+--------------------------------------------------*/
+
+/* Enables smooth movement when using anchor links such as #gallery. */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Makes width and height include padding and border. */
+* {
+	box-sizing: border-box;
+}
+
+/* Controls the site's default spacing, typeface, text color, and background. */
+body {
+	margin: 0;
+	font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+	color: var(--color-text-primary);
+	background: var(--color-brand-100);
+}
+
+/* Ensures the main page occupies at least one viewport height. */
+.home {
+	min-height: 100vh;
+}
+
+/* #endregion */
