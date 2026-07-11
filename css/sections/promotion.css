@@ -1,31 +1,27 @@
 /* #region Promotion Section */
 /*==================================================
-	Promotion Section
+	Promotion Carousel
 
-	顯示目前有效的優惠海報與預約入口。
-	桌機與手機分別載入對應比例的圖片，並支援點擊放大檢視。
+	Displays all currently available promotions as a responsive carousel.
+	Supports permanent campaigns, date filtering, autoplay, buttons, dots,
+	mobile swipe gestures, and click-to-enlarge poster previews.
 ==================================================*/
-
-/*--------------------------------------------------
-	維護索引
-
-	.promotion-section		優惠區背景與留白
-	.promotion-content		JavaScript 內容掛載點
-	.promotion-card			優惠卡片外框與版面
-	.promotion-media-button	海報與放大操作
-	.promotion-body			活動標題、說明與按鈕
-	.promotion-dialog		原生 Dialog 放大檢視
---------------------------------------------------*/
 
 .promotion-section {
 	padding: 88px 24px;
-	background:
-		linear-gradient(
-			180deg,
-			rgba(255, 250, 247, 0.96),
-			rgba(247, 235, 228, 0.9)
-		);
+	background: linear-gradient(
+		180deg,
+		rgba(255, 250, 247, 0.96),
+		rgba(247, 235, 228, 0.9)
+	);
 	text-align: center;
+}
+
+
+.promotion-section > .section-label {
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: 0.18em;
 }
 
 .promotion-content {
@@ -33,7 +29,8 @@
 	margin: 34px auto 0;
 }
 
-.promotion-card {
+.promotion-card,
+.promotion-carousel {
 	overflow: hidden;
 	border: 1px solid rgba(183, 131, 118, 0.16);
 	border-radius: var(--radius-hero);
@@ -41,24 +38,41 @@
 	box-shadow: 0 18px 44px rgba(91, 65, 57, 0.08);
 }
 
-.promotion-card-active {
-	display: grid;
-	grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
-	align-items: stretch;
-}
-
 .promotion-card-loading,
 .promotion-card-fallback {
 	padding: 52px 32px;
 }
 
+.promotion-carousel-viewport {
+	overflow: hidden;
+	touch-action: pan-y;
+}
+
+.promotion-carousel-track {
+	display: flex;
+	transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+	will-change: transform;
+}
+
+.promotion-slide {
+	display: grid;
+	grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+	align-items: stretch;
+	flex: 0 0 100%;
+	min-width: 0;
+}
+
 .promotion-media-button {
 	position: relative;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	min-width: 0;
+	min-height: 0;
 	padding: 0;
 	cursor: zoom-in;
+	overflow: hidden;
 	background: rgba(247, 235, 244, 0.7);
 	border: 0;
 }
@@ -66,14 +80,14 @@
 .promotion-picture {
 	display: block;
 	width: 100%;
-	height: 100%;
 }
 
 .promotion-image {
 	display: block;
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	height: auto;
+	max-height: 720px;
+	object-fit: contain;
 }
 
 .promotion-media-hint {
@@ -109,7 +123,6 @@
 }
 
 .promotion-media-button.is-image-error {
-	min-height: 360px;
 	cursor: default;
 }
 
@@ -137,7 +150,6 @@
 	font-size: 12px;
 	font-weight: 700;
 	letter-spacing: 0.12em;
-	text-transform: uppercase;
 }
 
 .promotion-title {
@@ -203,6 +215,73 @@
 	background: var(--color-brand-800);
 }
 
+.promotion-carousel-controls {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 18px;
+	min-height: 64px;
+	padding: 10px 20px;
+	border-top: 1px solid rgba(183, 131, 118, 0.12);
+	background: rgba(255, 252, 250, 0.82);
+}
+
+.promotion-carousel-button,
+.promotion-carousel-dot {
+	padding: 0;
+	cursor: pointer;
+	border: 0;
+}
+
+.promotion-carousel-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	color: var(--color-brand-800);
+	background: rgba(183, 131, 118, 0.1);
+	font-size: 18px;
+	transition:
+		transform var(--duration-fast) ease,
+		background-color var(--duration-fast) ease;
+}
+
+.promotion-carousel-button:hover {
+	background: rgba(183, 131, 118, 0.18);
+	transform: translateY(-1px);
+}
+
+.promotion-carousel-dots {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 9px;
+}
+
+.promotion-carousel-dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: rgba(183, 131, 118, 0.28);
+	transition:
+		width var(--duration-fast) ease,
+		background-color var(--duration-fast) ease;
+}
+
+.promotion-carousel-dot.is-active {
+	width: 26px;
+	border-radius: var(--radius-pill);
+	background: var(--color-brand-700);
+}
+
+.promotion-carousel-button:focus-visible,
+.promotion-carousel-dot:focus-visible {
+	outline: 3px solid rgba(183, 131, 118, 0.38);
+	outline-offset: 3px;
+}
+
 /*--------------------------------------------------
 	Promotion Dialog
 --------------------------------------------------*/
@@ -263,8 +342,15 @@
 }
 
 @media (max-width: 860px) {
-	.promotion-card-active {
+	.promotion-image {
+		max-height: none;
+	}
+	.promotion-slide {
 		grid-template-columns: 1fr;
+	}
+
+	.promotion-media-button {
+		min-height: 0;
 	}
 
 	.promotion-body {
@@ -273,6 +359,11 @@
 }
 
 @media (max-width: 640px) {
+	.promotion-section > .section-label {
+		font-size: 16px;
+		letter-spacing: 0.14em;
+	}
+
 	.promotion-section {
 		padding: 68px 18px;
 	}
@@ -281,7 +372,8 @@
 		margin-top: 26px;
 	}
 
-	.promotion-card {
+	.promotion-card,
+	.promotion-carousel {
 		border-radius: var(--radius-large);
 	}
 
@@ -313,6 +405,17 @@
 		bottom: 12px;
 	}
 
+	.promotion-carousel-controls {
+		gap: 14px;
+		min-height: 58px;
+		padding: 8px 14px;
+	}
+
+	.promotion-carousel-button {
+		width: 36px;
+		height: 36px;
+	}
+
 	.promotion-dialog {
 		padding: 14px;
 	}
@@ -324,8 +427,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.promotion-carousel-track,
 	.promotion-media-hint,
-	.promotion-action {
+	.promotion-action,
+	.promotion-carousel-button,
+	.promotion-carousel-dot {
 		transition: none;
 	}
 }

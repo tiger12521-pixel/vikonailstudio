@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="robots" content="noindex, nofollow" />
+	<title>活動管理｜Nail Story 薇可工作坊</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="./css/admin.css" />
+</head>
+<body>
+	<header class="admin-header">
+		<div>
+			<p class="admin-eyebrow">Vico Nail Story CMS</p>
+			<h1>最新活動管理</h1>
+		</div>
+		<a class="admin-site-link" href="../" target="_blank" rel="noopener noreferrer">查看網站</a>
+	</header>
+
+	<main class="admin-main">
+		<section class="admin-notice" id="environmentNotice" hidden>
+			<strong>本機開發模式</strong>
+			<span>Cloudflare Access 驗證僅在線上環境生效。本機可直接測試管理功能。</span>
+		</section>
+
+		<section class="admin-panel">
+			<div class="admin-panel-heading">
+				<div>
+					<p class="admin-section-label">Activities</p>
+					<h2>活動清單</h2>
+				</div>
+				<button class="button button-primary" id="createPromotionButton" type="button">＋ 新增活動</button>
+			</div>
+			<div class="promotion-list" id="promotionList" aria-live="polite">
+				<p class="empty-message">活動資料載入中...</p>
+			</div>
+		</section>
+	</main>
+
+	<dialog class="editor-dialog" id="promotionDialog">
+		<form class="editor-form" id="promotionForm">
+			<div class="editor-heading">
+				<div>
+					<p class="admin-section-label">Activity Editor</p>
+					<h2 id="editorTitle">新增活動</h2>
+				</div>
+				<button class="icon-button" id="closeDialogButton" type="button" aria-label="關閉">×</button>
+			</div>
+
+			<input id="promotionId" name="id" type="hidden" />
+
+			<div class="form-grid">
+				<label class="field field-wide">
+					<span>活動名稱 *</span>
+					<input id="title" name="title" type="text" maxlength="80" required />
+				</label>
+
+				<label class="field field-wide">
+					<span>簡短說明</span>
+					<textarea id="description" name="description" rows="3" maxlength="300"></textarea>
+				</label>
+
+				<label class="field">
+					<span>桌機海報</span>
+					<input id="desktopImage" name="desktopImage" type="file" accept="image/jpeg,image/png,image/webp" />
+					<small>建議橫式圖片，資訊圖片會完整顯示，不裁切。</small>
+				</label>
+
+				<label class="field">
+					<span>手機海報</span>
+					<input id="mobileImage" name="mobileImage" type="file" accept="image/jpeg,image/png,image/webp" />
+					<small>建議直式圖片；未提供時可沿用桌機海報。</small>
+				</label>
+
+				<label class="field field-wide">
+					<span>圖片替代文字</span>
+					<textarea id="imageAlt" name="imageAlt" rows="2" maxlength="400"></textarea>
+				</label>
+
+				<label class="field">
+					<span>開始日期</span>
+					<input id="startDate" name="startDate" type="date" />
+				</label>
+
+				<label class="field" id="endDateField">
+					<span>結束日期</span>
+					<input id="endDate" name="endDate" type="date" />
+				</label>
+
+				<label class="field">
+					<span>排序</span>
+					<input id="sortOrder" name="sortOrder" type="number" min="0" step="1" value="0" />
+				</label>
+
+				<label class="field">
+					<span>按鈕文字</span>
+					<input id="buttonText" name="buttonText" type="text" maxlength="30" value="立即預約" />
+				</label>
+
+				<label class="field field-wide">
+					<span>按鈕連結</span>
+					<input id="buttonUrl" name="buttonUrl" type="url" value="https://line.me/ti/p/6Tmd0fH59r" />
+				</label>
+			</div>
+
+			<div class="toggle-grid">
+				<label class="toggle"><input id="isActive" name="isActive" type="checkbox" checked /><span>公開顯示</span></label>
+				<label class="toggle"><input id="isPermanent" name="isPermanent" type="checkbox" /><span>常駐活動</span></label>
+				<label class="toggle"><input id="isPinned" name="isPinned" type="checkbox" /><span>置頂顯示</span></label>
+			</div>
+
+			<p class="form-message" id="formMessage" role="status"></p>
+
+			<div class="editor-actions">
+				<button class="button" id="cancelButton" type="button">取消</button>
+				<button class="button button-primary" id="saveButton" type="submit">儲存並發布</button>
+			</div>
+		</form>
+	</dialog>
+
+	<script type="module" src="./js/admin.js"></script>
+</body>
+</html>

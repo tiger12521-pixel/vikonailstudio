@@ -1,0 +1,12 @@
+name = "vico-nail-story"
+compatibility_date = "2026-07-11"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "vico-nail-story"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[[r2_buckets]]
+binding = "PROMOTION_IMAGES"
+bucket_name = "vico-nail-story-promotions"

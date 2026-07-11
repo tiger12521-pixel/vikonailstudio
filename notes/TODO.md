@@ -27,3 +27,10 @@
 - [x] 過期或停用活動自動隱藏，並顯示社群備援內容。
 - [ ] V1.2.0 評估 Cloudflare D1、R2 與 `/admin` 管理頁面。
 - [ ] 管理後台完成後，將優惠資料來源由 JSON 切換成 `/api/promotions`。
+
+## v1.2.0 Deployment
+
+- [ ] 建立 D1 database 並執行 migrations
+- [ ] 建立 R2 bucket 與 Pages binding
+- [ ] 設定 Cloudflare Access Email One-time PIN
+- [ ] 線上驗證 `/admin/*` 與 `/api/admin/*` 權限

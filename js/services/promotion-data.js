@@ -2,13 +2,9 @@
 
 import { PROMOTION_CONFIG } from "../config/promotion-config.js";
 
-/*
- * Loads promotion content from the static JSON file.
- * A cache-busting query keeps content updates visible after deployment.
- */
-export async function loadPromotions() {
-	const requestUrl = `${PROMOTION_CONFIG.dataUrl}?t=${Date.now()}`;
-	const response = await fetch(requestUrl, {
+async function requestPromotionData(url) {
+	const separator = url.includes("?") ? "&" : "?";
+	const response = await fetch(`${url}${separator}t=${Date.now()}`, {
 		cache: "no-store"
 	});
 
@@ -23,6 +19,20 @@ export async function loadPromotions() {
 	}
 
 	return data.promotions;
+}
+
+/*
+ * Loads live promotion data from the v1.2.0 public API.
+ * If the API is unavailable, the last packaged JSON data is used so the
+ * public website can continue showing activities safely.
+ */
+export async function loadPromotions() {
+	try {
+		return await requestPromotionData(PROMOTION_CONFIG.apiUrl);
+	} catch (apiError) {
+		console.warn("Promotion API unavailable. Using static fallback.", apiError);
+		return requestPromotionData(PROMOTION_CONFIG.fallbackDataUrl);
+	}
 }
 
 /* #endregion */

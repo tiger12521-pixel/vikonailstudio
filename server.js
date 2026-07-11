@@ -1,5 +1,8 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
+const crypto = require("crypto");
+const multer = require("multer");
 const { google } = require("googleapis");
 
 const app = express();
@@ -7,131 +10,236 @@ const PORT = process.env.PORT || 3200;
 
 const CALENDAR_ID = "tina34252@gmail.com";
 const SERVICE_ACCOUNT_KEY_PATH =
-  "C:\\Users\\USER\\Documents\\vika-booking-ecb0317cc5b3.json";
+	"C:\\Users\\USER\\Documents\\vika-booking-ecb0317cc5b3.json";
+const PROMOTION_DATA_PATH = path.join(__dirname, "data", "promotions.json");
+const PROMOTION_UPLOAD_DIRECTORY = path.join(
+	__dirname,
+	"assets",
+	"uploads",
+	"promotions"
+);
 
+fs.mkdirSync(PROMOTION_UPLOAD_DIRECTORY, { recursive: true });
+
+const upload = multer({
+	storage: multer.diskStorage({
+		destination: PROMOTION_UPLOAD_DIRECTORY,
+		filename: (request, file, callback) => {
+			const extension = path.extname(file.originalname).toLowerCase() || ".jpg";
+			callback(null, `${Date.now()}-${crypto.randomUUID()}${extension}`);
+		}
+	}),
+	limits: {
+		fileSize: 8 * 1024 * 1024
+	},
+	fileFilter: (request, file, callback) => {
+		const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+		callback(allowedTypes.has(file.mimetype) ? null : new Error("Unsupported image type."), allowedTypes.has(file.mimetype));
+	}
+});
+
+app.use(express.json());
 app.use(express.static(__dirname));
 
 function formatDateKey(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+	return `${year}-${month}-${day}`;
 }
 
 function getMonday(date) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
-  return d;
+	const normalizedDate = new Date(date);
+	const day = normalizedDate.getDay();
+	const difference = day === 0 ? -6 : 1 - day;
+	normalizedDate.setDate(normalizedDate.getDate() + difference);
+	normalizedDate.setHours(0, 0, 0, 0);
+	return normalizedDate;
 }
 
 function getSlotName(date) {
-  const hour = date.getHours();
-
-  if (hour >= 8 && hour < 12) {
-    return "morning";
-  }
-
-  if (hour >= 12 && hour < 17) {
-    return "afternoon";
-  }
-
-  if (hour >= 17 && hour < 22) {
-    return "evening";
-  }
-
-  return null;
+	const hour = date.getHours();
+	if (hour >= 8 && hour < 12) return "morning";
+	if (hour >= 12 && hour < 17) return "afternoon";
+	if (hour >= 17 && hour < 22) return "evening";
+	return null;
 }
 
 async function getCalendarEvents(timeMin, timeMax) {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: SERVICE_ACCOUNT_KEY_PATH,
-    scopes: ["https://www.googleapis.com/auth/calendar.readonly"],
-  });
-
-  const calendar = google.calendar({
-    version: "v3",
-    auth,
-  });
-
-  const response = await calendar.events.list({
-    calendarId: CALENDAR_ID,
-    timeMin: timeMin.toISOString(),
-    timeMax: timeMax.toISOString(),
-    singleEvents: true,
-    orderBy: "startTime",
-  });
-
-  return response.data.items || [];
+	const auth = new google.auth.GoogleAuth({
+		keyFile: SERVICE_ACCOUNT_KEY_PATH,
+		scopes: ["https://www.googleapis.com/auth/calendar.readonly"]
+	});
+	const calendar = google.calendar({ version: "v3", auth });
+	const response = await calendar.events.list({
+		calendarId: CALENDAR_ID,
+		timeMin: timeMin.toISOString(),
+		timeMax: timeMax.toISOString(),
+		singleEvents: true,
+		orderBy: "startTime"
+	});
+	return response.data.items || [];
 }
 
-app.get("/api/booking", async (req, res) => {
-  try {
-    const weekParam = req.query.week;
+function readPromotionData() {
+	const rawData = fs.readFileSync(PROMOTION_DATA_PATH, "utf8");
+	const data = JSON.parse(rawData);
+	return Array.isArray(data.promotions) ? data.promotions : [];
+}
 
-    const weekStart = weekParam
-      ? getMonday(new Date(`${weekParam}T00:00:00`))
-      : getMonday(new Date());
-      
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 7);
+function writePromotionData(promotions) {
+	fs.writeFileSync(
+		PROMOTION_DATA_PATH,
+		`${JSON.stringify({ promotions }, null, "\t")}\n`,
+		"utf8"
+	);
+}
 
-    const bookingData = {};
+function toBoolean(value) {
+	return value === true || value === "true" || value === "1" || value === 1;
+}
 
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(weekStart);
-      date.setDate(weekStart.getDate() + i);
+function createPromotionId(title) {
+	const base = String(title || "activity")
+		.normalize("NFKD")
+		.replace(/[^a-zA-Z0-9\u4e00-\u9fff]+/g, "-")
+		.replace(/^-+|-+$/g, "")
+		.toLowerCase();
+	return `${base || "activity"}-${crypto.randomUUID().slice(0, 8)}`;
+}
 
-      bookingData[formatDateKey(date)] = {
-        morning: true,
-        afternoon: true,
-        evening: true,
-      };
-    }
+function getUploadedImageUrl(file) {
+	return file ? `/assets/uploads/promotions/${file.filename}` : null;
+}
 
-    const events = await getCalendarEvents(weekStart, weekEnd);
+function normalizePromotionInput(body, existing = {}) {
+	const title = String(body.title || existing.title || "").trim();
+	if (!title) throw new Error("請輸入活動名稱。");
+	const isPermanent = toBoolean(body.isPermanent);
+	return {
+		title,
+		description: String(body.description ?? existing.description ?? "").trim(),
+		imageAlt: String(body.imageAlt ?? existing.imageAlt ?? title).trim(),
+		startDate: String(body.startDate ?? existing.startDate ?? "").trim() || null,
+		endDate: isPermanent ? null : (String(body.endDate ?? existing.endDate ?? "").trim() || null),
+		isPermanent,
+		isPinned: toBoolean(body.isPinned),
+		buttonText: String(body.buttonText ?? existing.buttonText ?? "立即預約").trim() || "立即預約",
+		buttonUrl: String(body.buttonUrl ?? existing.buttonUrl ?? "https://line.me/ti/p/6Tmd0fH59r").trim(),
+		isActive: toBoolean(body.isActive),
+		sortOrder: Number.parseInt(body.sortOrder ?? existing.sortOrder ?? 0, 10) || 0
+	};
+}
 
-     
+const promotionUploadFields = upload.fields([
+	{ name: "desktopImage", maxCount: 1 },
+	{ name: "mobileImage", maxCount: 1 }
+]);
 
-    events.forEach((event) => {
+app.get("/api/booking", async (request, response) => {
+	try {
+		const weekStart = request.query.week
+			? getMonday(new Date(`${request.query.week}T00:00:00`))
+			: getMonday(new Date());
+		const weekEnd = new Date(weekStart);
+		weekEnd.setDate(weekStart.getDate() + 7);
+		const bookingData = {};
 
-      if (!event.start || !event.start.dateTime) {
-        return;
-    }
+		for (let index = 0; index < 7; index += 1) {
+			const date = new Date(weekStart);
+			date.setDate(weekStart.getDate() + index);
+			bookingData[formatDateKey(date)] = {
+				morning: true,
+				afternoon: true,
+				evening: true
+			};
+		}
 
-  // 沒有 Description 代表只是預留時段，不算已預約
-  const hasBooking =
-    event.description &&
-    event.description.trim().length > 0;
+		const events = await getCalendarEvents(weekStart, weekEnd);
+		events.forEach((event) => {
+			if (!event.start || !event.start.dateTime) return;
+			if (!event.description || !event.description.trim()) return;
+			const startDate = new Date(event.start.dateTime);
+			const dateKey = formatDateKey(startDate);
+			const slotName = getSlotName(startDate);
+			if (bookingData[dateKey] && slotName) bookingData[dateKey][slotName] = false;
+		});
 
-  if (!hasBooking) {
-    return;
-  }
-
-  const startDate = new Date(event.start.dateTime);
-  const dateKey = formatDateKey(startDate);
-  const slotName = getSlotName(startDate);
-
-  if (bookingData[dateKey] && slotName) {
-    bookingData[dateKey][slotName] = false;
-  }
+		response.json(bookingData);
+	} catch (error) {
+		console.error("Failed to load booking data:", error.message);
+		response.status(500).json({ error: "Failed to load booking data" });
+	}
 });
 
-    res.json(bookingData);
-  } catch (error) {
-    console.error("Failed to load booking data:", error.message);
-    res.status(500).json({
-      error: "Failed to load booking data",
-    });
-  }
+app.get("/api/promotions", (request, response) => {
+	try {
+		response.set("Cache-Control", "no-store");
+		response.json({ promotions: readPromotionData().filter((item) => item.isActive === true) });
+	} catch (error) {
+		response.status(500).json({ error: error.message });
+	}
 });
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.get("/api/admin/promotions", (request, response) => {
+	try {
+		response.set("Cache-Control", "no-store");
+		response.json({ promotions: readPromotionData() });
+	} catch (error) {
+		response.status(500).json({ error: error.message });
+	}
+});
+
+app.post("/api/admin/promotions", promotionUploadFields, (request, response) => {
+	try {
+		const values = normalizePromotionInput(request.body);
+		const desktopImage = getUploadedImageUrl(request.files?.desktopImage?.[0]);
+		const mobileImage = getUploadedImageUrl(request.files?.mobileImage?.[0]) || desktopImage;
+		if (!desktopImage) return response.status(400).json({ error: "新增活動時必須上傳桌機海報。" });
+		const promotions = readPromotionData();
+		const id = createPromotionId(values.title);
+		promotions.push({ id, ...values, desktopImage, mobileImage });
+		writePromotionData(promotions);
+		return response.status(201).json({ id });
+	} catch (error) {
+		return response.status(400).json({ error: error.message });
+	}
+});
+
+app.put("/api/admin/promotions/:id", promotionUploadFields, (request, response) => {
+	try {
+		const promotions = readPromotionData();
+		const index = promotions.findIndex((item) => item.id === request.params.id);
+		if (index < 0) return response.status(404).json({ error: "找不到指定活動。" });
+		const existing = promotions[index];
+		const values = normalizePromotionInput(request.body, existing);
+		const desktopImage = getUploadedImageUrl(request.files?.desktopImage?.[0]) || existing.desktopImage;
+		const mobileImage = getUploadedImageUrl(request.files?.mobileImage?.[0]) || existing.mobileImage || desktopImage;
+		promotions[index] = { ...existing, ...values, desktopImage, mobileImage };
+		writePromotionData(promotions);
+		return response.json({ id: existing.id });
+	} catch (error) {
+		return response.status(400).json({ error: error.message });
+	}
+});
+
+app.delete("/api/admin/promotions/:id", (request, response) => {
+	try {
+		const promotions = readPromotionData();
+		const nextPromotions = promotions.filter((item) => item.id !== request.params.id);
+		if (nextPromotions.length === promotions.length) return response.status(404).json({ error: "找不到指定活動。" });
+		writePromotionData(nextPromotions);
+		return response.status(204).end();
+	} catch (error) {
+		return response.status(500).json({ error: error.message });
+	}
+});
+
+app.get("/", (request, response) => {
+	response.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running: http://localhost:${PORT}`);
+	console.log(`Server running: http://localhost:${PORT}`);
+	console.log(`Admin panel: http://localhost:${PORT}/admin/`);
 });

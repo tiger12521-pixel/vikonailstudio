@@ -9,10 +9,28 @@
 			"imageAlt": "Nail Story 薇可工作坊美好分享寵愛加碼活動：消費或儲值滿 800 元贈隨身凡士林，滿 1500 元贈凡士林及護手霜，滿 2500 元贈卸甲續作券一張，數量有限送完為止。",
 			"startDate": "2026-07-11",
 			"endDate": null,
+			"isPermanent": false,
+			"isPinned": true,
 			"buttonText": "立即預約",
 			"buttonUrl": "https://line.me/ti/p/6Tmd0fH59r",
 			"isActive": true,
 			"sortOrder": 1
+		},
+		{
+			"id": "loyalty-reward",
+			"title": "集點兌換小飾品",
+			"description": "單次消費每滿 600 元集 1 點；集滿 5 點可兌換 200 元內小飾品，集滿 10 點可兌換 500 元內小飾品。",
+			"desktopImage": "assets/images/promotions/loyalty-reward-desktop.jpg",
+			"mobileImage": "assets/images/promotions/loyalty-reward-mobile.jpg",
+			"imageAlt": "Nail Story 薇可工作坊常駐集點活動：單次消費每滿 600 元可集 1 點，1200 元集 2 點，以此類推；集滿 5 點兌換 200 元內小耳環或髮飾，集滿 10 點兌換 500 元內小耳環或髮飾。",
+			"startDate": "2026-07-11",
+			"endDate": null,
+			"isPermanent": true,
+			"isPinned": false,
+			"buttonText": "立即預約",
+			"buttonUrl": "https://line.me/ti/p/6Tmd0fH59r",
+			"isActive": true,
+			"sortOrder": 2
 		}
 	]
 }

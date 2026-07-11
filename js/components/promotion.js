@@ -1,4 +1,4 @@
-/* #region Promotion Component */
+/* #region Promotion Carousel Component */
 
 import { PROMOTION_CONFIG } from "../config/promotion-config.js";
 import { loadPromotions } from "../services/promotion-data.js";
@@ -33,7 +33,7 @@ function isPromotionAvailable(promotion, now = new Date()) {
 		return false;
 	}
 
-	if (endDate && now > endDate) {
+	if (!promotion.isPermanent && endDate && now > endDate) {
 		return false;
 	}
 
@@ -45,12 +45,18 @@ function isPromotionAvailable(promotion, now = new Date()) {
 	);
 }
 
-function getActivePromotion(promotions) {
+function getActivePromotions(promotions) {
 	return promotions
 		.filter((promotion) => isPromotionAvailable(promotion))
 		.sort((first, second) => {
+			const pinnedDifference = Number(Boolean(second.isPinned)) - Number(Boolean(first.isPinned));
+
+			if (pinnedDifference !== 0) {
+				return pinnedDifference;
+			}
+
 			return (first.sortOrder || 0) - (second.sortOrder || 0);
-		})[0] || null;
+		});
 }
 
 function createElement(tagName, className, textContent = "") {
@@ -80,8 +86,6 @@ function createPromotionPicture(promotion) {
 	image.alt = promotion.imageAlt || promotion.title;
 	image.loading = "lazy";
 	image.decoding = "async";
-	image.width = 1450;
-	image.height = 1024;
 
 	picture.append(mobileSource, image);
 
@@ -105,20 +109,21 @@ function createPromotionButton(promotion) {
 	return button;
 }
 
-function renderPromotion(contentElement, promotion, openDialog) {
-	const article = createElement("article", "promotion-card promotion-card-active");
+function createPromotionSlide(promotion, index, openDialog) {
+	const slide = createElement("article", "promotion-slide");
 	const mediaButton = createElement("button", "promotion-media-button");
 	const mediaHint = createElement("span", "promotion-media-hint", "點擊放大海報");
 	const body = createElement("div", "promotion-body");
-	const badge = createElement("span", "promotion-badge", "Limited Offer");
+	const badgeText = promotion.isPermanent ? "常駐活動" : "最新優惠";
+	const badge = createElement("span", "promotion-badge", badgeText);
 	const title = createElement("h2", "promotion-title", promotion.title);
-	const description = createElement(
-		"p",
-		"promotion-text",
-		promotion.description || ""
-	);
+	const description = createElement("p", "promotion-text", promotion.description || "");
 	const actions = createElement("div", "promotion-links");
 	const { picture, image } = createPromotionPicture(promotion);
+
+	slide.dataset.promotionIndex = String(index);
+	slide.setAttribute("role", "group");
+	slide.setAttribute("aria-roledescription", "投影片");
 
 	mediaButton.type = "button";
 	mediaButton.setAttribute("aria-label", `放大查看「${promotion.title}」活動海報`);
@@ -135,9 +140,145 @@ function renderPromotion(contentElement, promotion, openDialog) {
 
 	actions.append(createPromotionButton(promotion));
 	body.append(badge, title, description, actions);
-	article.append(mediaButton, body);
+	slide.append(mediaButton, body);
 
-	contentElement.replaceChildren(article);
+	return slide;
+}
+
+function createNavigationButton(direction, label) {
+	const button = createElement(
+		"button",
+		`promotion-carousel-button promotion-carousel-button-${direction}`
+	);
+
+	button.type = "button";
+	button.setAttribute("aria-label", label);
+	button.innerHTML = direction === "previous" ? "&#10094;" : "&#10095;";
+
+	return button;
+}
+
+function renderPromotionCarousel(contentElement, promotions, openDialog) {
+	const carousel = createElement("div", "promotion-carousel");
+	const viewport = createElement("div", "promotion-carousel-viewport");
+	const track = createElement("div", "promotion-carousel-track");
+	const controls = createElement("div", "promotion-carousel-controls");
+	const dots = createElement("div", "promotion-carousel-dots");
+	const previousButton = createNavigationButton("previous", "顯示上一個優惠");
+	const nextButton = createNavigationButton("next", "顯示下一個優惠");
+	const slides = promotions.map((promotion, index) => {
+		return createPromotionSlide(promotion, index, openDialog);
+	});
+	let activeIndex = 0;
+	let autoplayTimer = null;
+	let pointerStartX = null;
+
+	track.append(...slides);
+	viewport.append(track);
+	carousel.append(viewport);
+
+	function setActiveSlide(nextIndex, userInitiated = false) {
+		activeIndex = (nextIndex + slides.length) % slides.length;
+		track.style.transform = `translateX(-${activeIndex * 100}%)`;
+
+		slides.forEach((slide, index) => {
+			const isActive = index === activeIndex;
+			slide.setAttribute("aria-hidden", String(!isActive));
+			slide.setAttribute("aria-label", `${index + 1} / ${slides.length}`);
+		});
+
+		dots.querySelectorAll("button").forEach((dot, index) => {
+			const isActive = index === activeIndex;
+			dot.classList.toggle("is-active", isActive);
+			dot.setAttribute("aria-current", isActive ? "true" : "false");
+		});
+
+		if (userInitiated) {
+			restartAutoplay();
+		}
+	}
+
+	function stopAutoplay() {
+		if (autoplayTimer) {
+			window.clearInterval(autoplayTimer);
+			autoplayTimer = null;
+		}
+	}
+
+	function startAutoplay() {
+		if (slides.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			return;
+		}
+
+		stopAutoplay();
+		autoplayTimer = window.setInterval(() => {
+			setActiveSlide(activeIndex + 1);
+		}, PROMOTION_CONFIG.autoplayInterval);
+	}
+
+	function restartAutoplay() {
+		stopAutoplay();
+		startAutoplay();
+	}
+
+	if (slides.length > 1) {
+		previousButton.addEventListener("click", () => {
+			setActiveSlide(activeIndex - 1, true);
+		});
+
+		nextButton.addEventListener("click", () => {
+			setActiveSlide(activeIndex + 1, true);
+		});
+
+		promotions.forEach((promotion, index) => {
+			const dot = createElement("button", "promotion-carousel-dot");
+
+			dot.type = "button";
+			dot.setAttribute("aria-label", `顯示「${promotion.title}」`);
+			dot.addEventListener("click", () => {
+				setActiveSlide(index, true);
+			});
+			dots.append(dot);
+		});
+
+		controls.append(previousButton, dots, nextButton);
+		carousel.append(controls);
+
+		viewport.addEventListener("pointerdown", (event) => {
+			pointerStartX = event.clientX;
+			stopAutoplay();
+		});
+
+		viewport.addEventListener("pointerup", (event) => {
+			if (pointerStartX === null) {
+				return;
+			}
+
+			const distance = event.clientX - pointerStartX;
+			pointerStartX = null;
+
+			if (Math.abs(distance) >= PROMOTION_CONFIG.swipeThreshold) {
+				setActiveSlide(activeIndex + (distance < 0 ? 1 : -1), true);
+				return;
+			}
+
+			startAutoplay();
+		});
+
+		viewport.addEventListener("pointercancel", () => {
+			pointerStartX = null;
+			startAutoplay();
+		});
+
+		carousel.addEventListener("mouseenter", stopAutoplay);
+		carousel.addEventListener("mouseleave", startAutoplay);
+		carousel.addEventListener("focusin", stopAutoplay);
+		carousel.addEventListener("focusout", startAutoplay);
+	}
+
+	contentElement.replaceChildren(carousel);
+	setActiveSlide(0);
+	startAutoplay();
 }
 
 function renderFallback(contentElement) {
@@ -200,14 +341,14 @@ export async function initializePromotion() {
 
 	try {
 		const promotions = await loadPromotions();
-		const activePromotion = getActivePromotion(promotions);
+		const activePromotions = getActivePromotions(promotions);
 
-		if (!activePromotion) {
+		if (activePromotions.length === 0) {
 			renderFallback(contentElement);
 			return;
 		}
 
-		renderPromotion(contentElement, activePromotion, openDialog);
+		renderPromotionCarousel(contentElement, activePromotions, openDialog);
 	} catch (error) {
 		console.warn("Unable to initialize promotion:", error);
 		renderFallback(contentElement);

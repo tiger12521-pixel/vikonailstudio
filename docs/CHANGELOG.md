@@ -1,3 +1,21 @@
+# Changelog
+
+
+## v1.2.0
+
+- 新增活動內容管理後台 `/admin/`。
+- 新增活動 CRUD、圖片上傳、常駐、日期、置頂、排序及顯示開關。
+- 新增 Cloudflare D1、R2 與 Pages Functions 架構。
+- 前台活動資料改為 API 優先、靜態 JSON fallback。
+- 保留海報完整顯示與「最新活動」中文標籤修正。
+
+## v1.1.2
+
+- Upgraded latest promotions to a responsive multi-campaign carousel.
+- Added a permanent loyalty reward campaign and responsive poster assets.
+- Added autoplay, previous/next controls, indicator dots, mobile swipe, ordering, pinned campaigns, and permanent campaign support.
+- Preserved all other v1.1.1 website sections and behavior.
+
 # 更新紀錄
 
 ## v1.1.1 - Data-driven promotion

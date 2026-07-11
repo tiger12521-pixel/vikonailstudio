@@ -33,7 +33,9 @@ http://localhost:3200
 assets/                 圖片與靜態資源
 css/                    全站與各頁面區塊樣式
 js/                     前端 JavaScript 模組
+admin/                  活動內容管理後台
 functions/api/          Cloudflare Pages Functions API
+migrations/             Cloudflare D1 database migrations
 data/                   本機測試資料
 scripts/                版本與發布輔助工具
 docs/                   正式架構、Coding Style 與發布文件
@@ -77,3 +79,13 @@ npm run release -- v1.0.1 --commit --push
 - `docs/RELEASE.md`
 - `notes/COMMON_COMMANDS.md`
 - `notes/DEPLOY_CHECKLIST.md`
+
+## 活動後台
+
+本機啟動後開啟：
+
+```text
+http://localhost:3200/admin/
+```
+
+正式環境使用 Cloudflare Access Email One-time PIN 保護。設定說明：[`docs/CLOUDFLARE-CMS-SETUP.md`](docs/CLOUDFLARE-CMS-SETUP.md)。
