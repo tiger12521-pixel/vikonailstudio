@@ -4,6 +4,7 @@
 
 import { initializeAppInfo } from "./config/app-info.js";
 import { initializeBooking } from "./components/booking.js";
+import { initializePromotion } from "./components/promotion.js";
 
 /*
  * Starts each independent website feature.
@@ -11,6 +12,7 @@ import { initializeBooking } from "./components/booking.js";
  */
 async function initializeApplication() {
 	await initializeAppInfo();
+	await initializePromotion();
 	initializeBooking();
 }
 

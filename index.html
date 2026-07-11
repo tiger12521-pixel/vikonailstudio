@@ -300,33 +300,38 @@
 			<!-- #region Promotion -->
 			<section class="promotion-section" id="promotion">
 				<p class="section-label">Promotion</p>
-				<div class="promotion-card">
-					<span class="promotion-badge">Coming Soon</span>
-					<h2 class="promotion-title">最新優惠</h2>
-					<p class="promotion-text">
-						活動內容即將更新。歡迎追蹤 Instagram 或加入 LINE，<br />
-						第一時間收到薇可美甲的最新活動資訊。
-					</p>
-					<div class="promotion-links">
-						<a
-							class="promotion-link"
-							href="https://www.instagram.com/nailstory03/"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							追蹤 Instagram
-						</a>
-						<a
-							class="promotion-link"
-							href="https://line.me/ti/p/6Tmd0fH59r"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							加入 LINE
-						</a>
+
+				<div
+					class="promotion-content"
+					id="promotionContent"
+					aria-live="polite"
+				>
+					<div class="promotion-card promotion-card-loading">
+						<span class="promotion-badge">Loading</span>
+						<h2 class="promotion-title">最新優惠</h2>
+						<p class="promotion-text">活動內容載入中，請稍候。</p>
 					</div>
 				</div>
 			</section>
+
+			<dialog class="promotion-dialog" id="promotionDialog">
+				<div class="promotion-dialog-panel">
+					<button
+						class="promotion-dialog-close"
+						id="promotionDialogClose"
+						type="button"
+						aria-label="關閉活動海報"
+					>
+						<span aria-hidden="true">×</span>
+					</button>
+					<img
+						class="promotion-dialog-image"
+						id="promotionDialogImage"
+						src=""
+						alt=""
+					/>
+				</div>
+			</dialog>
 			<!-- #endregion -->
 
 			<section id="gallery" class="gallery-section">
@@ -640,6 +645,6 @@
 			</section>
 		</main>
 
-		<script type="module" src="js/main.js?v=1.1.0"></script>
+		<script type="module" src="js/main.js?v=1.1.1"></script>
 	</body>
 </html>

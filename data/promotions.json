@@ -1,0 +1,18 @@
+{
+	"promotions": [
+		{
+			"id": "gift-campaign-2026",
+			"title": "美好分享・寵愛加碼",
+			"description": "當日消費或儲值即可享限定好禮，數量有限，送完為止。",
+			"desktopImage": "assets/images/promotions/gift-campaign-desktop.jpg",
+			"mobileImage": "assets/images/promotions/gift-campaign-mobile.jpg",
+			"imageAlt": "Nail Story 薇可工作坊美好分享寵愛加碼活動：消費或儲值滿 800 元贈隨身凡士林，滿 1500 元贈凡士林及護手霜，滿 2500 元贈卸甲續作券一張，數量有限送完為止。",
+			"startDate": "2026-07-11",
+			"endDate": null,
+			"buttonText": "立即預約",
+			"buttonUrl": "https://line.me/ti/p/6Tmd0fH59r",
+			"isActive": true,
+			"sortOrder": 1
+		}
+	]
+}

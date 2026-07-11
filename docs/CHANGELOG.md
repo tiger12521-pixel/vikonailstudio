@@ -1,5 +1,20 @@
 # 更新紀錄
 
+## v1.1.1 - Data-driven promotion
+
+### Added
+
+- 新增資料驅動的最新優惠元件。
+- 新增桌機橫式與手機直式活動海報。
+- 新增海報點擊放大 Dialog、圖片載入失敗保護與備援內容。
+- 新增活動有效期間、顯示開關與排序欄位。
+- 新增 V1.1.1 開發與維護說明。
+
+### Changed
+
+- 最新優惠由 `data/promotions.json` 管理，不再將活動內容寫死於 HTML。
+- 專案測試版本更新為 1.1.1。
+
 ## v1.1.0 - Content information sections
 
 ### Added
