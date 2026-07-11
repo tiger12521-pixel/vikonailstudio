@@ -1,0 +1,144 @@
+/* #region Booking Guide Section */
+/*==================================================
+	Booking Guide Section
+
+	整理客人在預約前、確認後與異動時需要知道的資訊。
+	內容文字位於 index.html；本檔案只負責卡片與排版。
+==================================================*/
+
+/*--------------------------------------------------
+	維護索引
+
+	.booking-guide-section	整個預約須知區的背景與留白
+	.booking-guide-grid		多張須知卡片的欄位配置
+	.booking-guide-card		單張須知卡片
+	.booking-guide-icon		卡片上方編號圓點
+	.booking-guide-list		卡片中的條列內容
+	.booking-policy			取消、改期與遲到的重要提醒
+--------------------------------------------------*/
+
+.booking-guide-section {
+	padding: 104px 24px;
+	background: #fffaf7;
+}
+
+.booking-guide-section h2 {
+	margin: 12px 0 18px;
+	color: var(--color-text-heading);
+	font-size: clamp(32px, 4vw, 42px);
+	text-align: center;
+}
+
+.booking-guide-intro {
+	max-width: 720px;
+	margin: 0 auto 42px;
+	color: var(--color-text-body);
+	font-size: 15px;
+	line-height: 1.9;
+	letter-spacing: 0.035em;
+	text-align: center;
+}
+
+.booking-guide-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 22px;
+	max-width: 1160px;
+	margin: 0 auto;
+}
+
+.booking-guide-card {
+	padding: 28px 26px;
+	border: 1px solid rgba(183, 131, 118, 0.14);
+	border-radius: var(--radius-large);
+	background: rgba(255, 255, 255, 0.84);
+	box-shadow: 0 12px 30px rgba(91, 65, 57, 0.06);
+}
+
+.booking-guide-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	margin-bottom: 16px;
+	border-radius: var(--radius-circle);
+	color: var(--color-white);
+	background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-700));
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.booking-guide-card h3 {
+	margin: 0 0 14px;
+	color: var(--color-text-brand);
+	font-size: 19px;
+	letter-spacing: 0.05em;
+}
+
+.booking-guide-list {
+	margin: 0;
+	padding-left: 1.2em;
+	color: var(--color-text-body);
+	font-size: 14px;
+	line-height: 1.85;
+}
+
+.booking-guide-list li + li {
+	margin-top: 8px;
+}
+
+.booking-policy {
+	max-width: 1160px;
+	margin: 24px auto 0;
+	padding: 24px 28px;
+	border: 1px solid rgba(217, 139, 160, 0.2);
+	border-radius: var(--radius-large);
+	background: rgba(255, 247, 249, 0.92);
+}
+
+.booking-policy h3 {
+	margin: 0 0 12px;
+	color: var(--color-price-strong);
+	font-size: 18px;
+}
+
+.booking-policy p {
+	margin: 0;
+	color: var(--color-text-body);
+	font-size: 14px;
+	line-height: 1.9;
+}
+
+.booking-policy p + p {
+	margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+	.booking-guide-grid {
+		grid-template-columns: 1fr;
+		max-width: 720px;
+	}
+
+	.booking-policy {
+		max-width: 720px;
+	}
+}
+
+@media (max-width: 640px) {
+	.booking-guide-section {
+		padding: 78px 18px;
+	}
+
+	.booking-guide-intro {
+		margin-bottom: 30px;
+		font-size: 14px;
+	}
+
+	.booking-guide-card,
+	.booking-policy {
+		padding: 24px 22px;
+	}
+}
+
+/* #endregion */

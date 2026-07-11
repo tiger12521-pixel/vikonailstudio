@@ -1,5 +1,19 @@
 # 更新紀錄
 
+## v1.1.0 - Content information sections
+
+### Added
+
+- 新增 Hero 後方的「最新優惠」預留區。
+- 新增「預約須知」卡片與取消、改期、遲到說明。
+- 新增可展開式「美甲常見問題」FAQ。
+- 新增 V1.1.0 開發說明。
+
+### Changed
+
+- 網站資訊順序調整為 Hero、最新優惠、作品集、價目表、預約須知、FAQ、預約狀況。
+- 專案測試版本更新為 1.1.0。
+
 ## v1.0.1 - Release workflow maintenance
 
 ### Added

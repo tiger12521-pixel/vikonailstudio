@@ -1,8 +1,8 @@
 {
 	"name": "Vico Nail Story",
-	"version": "v1.0.1",
-	"build": "2026-07-11T02:34:33.727Z",
-	"commit": "a54e54f02a5a",
+	"version": "v1.1.0",
+	"build": "2026-07-11T00:00:00.000Z",
+	"commit": "pending-release",
 	"branch": "main",
 	"environment": "Production"
 }

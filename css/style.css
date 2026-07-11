@@ -14,6 +14,9 @@
 /* 3. 各畫面區段：順序與 index.html 的內容排列一致。 */
 @import url("sections/header.css");
 @import url("sections/hero.css");
+@import url("sections/promotion.css");
 @import url("sections/gallery.css");
 @import url("sections/price.css");
+@import url("sections/booking-guide.css");
+@import url("sections/faq.css");
 @import url("sections/booking.css");
