@@ -3,7 +3,7 @@ const path = require("path");
 const { google } = require("googleapis");
 
 const app = express();
-const PORT = 3200;
+const PORT = process.env.PORT || 3200;
 
 const CALENDAR_ID = "tina34252@gmail.com";
 const SERVICE_ACCOUNT_KEY_PATH =
