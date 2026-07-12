@@ -1,0 +1,23 @@
+{
+	"name": "Nail Story 薇可美甲工作坊",
+	"short_name": "薇可美甲",
+	"description": "苗栗市預約制美甲工作室",
+	"lang": "zh-Hant",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#f8f2f4",
+	"theme_color": "#b4778d",
+	"icons": [
+		{
+			"src": "/assets/icons/icon-192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/assets/icons/icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}

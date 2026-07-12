@@ -1,6 +1,6 @@
 {
 	"name": "viconailstory",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"description": "Official website for Vico Nail Story.",
 	"main": "server.js",
 	"scripts": {

@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.3.1] - 2026-07-12
+
+### Added
+
+- SEO metadata, canonical URLs, Open Graph and Twitter Card metadata.
+- `robots.txt`, `sitemap.xml`, web manifest and favicon assets.
+- Local business structured data for the homepage.
+
 ## v1.2.0
 
 - 新增活動內容管理後台 `/admin/`。

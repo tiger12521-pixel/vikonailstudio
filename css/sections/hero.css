@@ -216,6 +216,7 @@
 
 .hero-brand-text {
 	display: block;
+	margin: 0;
 
 	font-family: "Noto Serif TC", "Source Han Serif TC", "Songti TC", serif;
 
