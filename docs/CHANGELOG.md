@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.3.2 - Gallery metadata concurrency fix
+
+### Fixed
+
+- 修正正式環境連續上傳作品時，單一 R2 `gallery.json` 產生最後寫入覆蓋前次資料的問題。
+- Gallery Metadata 改為每件作品各自儲存一份 R2 JSON，避免不同作品互相覆蓋。
+- 保留 V1.3.1 舊版 `gallery.json` 相容讀取，不需要手動搬移既有作品。
+
+
 
 ## [1.3.1] - 2026-07-12
 
