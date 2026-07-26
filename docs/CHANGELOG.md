@@ -1,5 +1,18 @@
 # Changelog
 
+本專案採用 Semantic Versioning：`MAJOR.MINOR.PATCH`。
+
+## v1.3.3 - Booking UX improvement
+
+### Changed
+
+- Hero「立即預約」改為導向站內預約須知。
+- 預約時段新增 09:00、13:00、17:00 標示。
+- 預約須知新增手足同時施作需預留兩個時段的說明。
+- 預約區新增「前往 LINE 預約」按鈕。
+
+# Changelog
+
 ## v1.3.2 - Gallery metadata concurrency fix
 
 ### Fixed

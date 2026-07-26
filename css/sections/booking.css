@@ -11,6 +11,7 @@
 
 	.booking-header	月份與上／下週按鈕的水平配置
 	.week-btn	左右切換按鈕尺寸、顏色與互動
+	.booking-time-header	三個預約時段的時間標示
 	.booking-list	每日預約資料的垂直間距
 	.booking-day	日期欄與時段欄的寬度配置
 	.booking-slots	早／午／晚三欄時段配置
@@ -22,6 +23,29 @@
 /*--------------------------------------------------
 	Booking List and Day Rows
 --------------------------------------------------*/
+
+.booking-time-header {
+	display: grid;
+	grid-template-columns: 82px 1fr;
+	align-items: center;
+	gap: 10px;
+
+	padding: 0 12px 8px;
+}
+
+.booking-time-labels {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 6px;
+}
+
+.booking-time-labels span {
+	color: var(--color-brand-700);
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-align: center;
+}
 
 .booking-list {
 	display: grid;
@@ -173,3 +197,48 @@
 }
 
 /* #endregion */
+
+
+.booking-line-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: min(100%, 280px);
+	min-height: 48px;
+	margin: 18px auto 0;
+	padding: 12px 24px;
+	border-radius: var(--radius-pill);
+
+	color: var(--color-white);
+	background: var(--color-brand-700);
+	font-size: 15px;
+	font-weight: 700;
+	text-decoration: none;
+
+	transition:
+		transform var(--duration-fast) ease,
+		background-color var(--duration-fast) ease,
+		box-shadow var(--duration-fast) ease;
+}
+
+.booking-line-link:hover {
+	background: #a9766c;
+	transform: translateY(-2px);
+	box-shadow: 0 10px 22px rgba(91, 65, 57, 0.16);
+}
+
+.booking-line-link:active {
+	transform: translateY(0) scale(0.98);
+}
+
+@media (max-width: 560px) {
+	.booking-time-header,
+	.booking-day {
+		grid-template-columns: 62px 1fr;
+	}
+
+	.booking-time-labels span {
+		font-size: 12px;
+	}
+}
