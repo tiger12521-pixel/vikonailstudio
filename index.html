@@ -221,11 +221,11 @@
 
 				<!-- LINE -->
 				<a
-					href="https://line.me/ti/p/6Tmd0fH59r"
+					href="https://lin.ee/OMhvyb7"
 					target="_blank"
 					rel="noopener noreferrer"
-					aria-label="LINE"
-					title="LINE"
+					aria-label="加入 LINE 官方帳號"
+					title="LINE 官方帳號"
 				>
 					<svg
 						class="site-nav-fill"
@@ -698,20 +698,180 @@
 					</div>
 
 					<p class="booking-note">
-						綠色代表可預約，紅色代表該時段已有預約。實際可預約時間請以
-						LINE 確認為準。
+						點選綠色時段可填寫預約詢問；紅色代表該時段已有預約，灰色代表時間已過。
+						送出詢問不代表預約成立，實際時間請以 LINE 回覆確認為準。
 					</p>
 
 					<a
 						class="booking-line-link"
-						href="https://line.me/ti/p/6Tmd0fH59r"
+						href="https://lin.ee/OMhvyb7"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						前往 LINE 預約
+						加入 LINE 官方帳號
 					</a>
 				</div>
 			</section>
+
+			<dialog class="booking-dialog" id="bookingDialog">
+				<div class="booking-dialog-panel">
+					<div class="booking-dialog-heading">
+						<div>
+							<p class="section-label">Booking Inquiry</p>
+							<h2>填寫預約詢問</h2>
+						</div>
+						<button
+							class="booking-dialog-close"
+							id="bookingDialogClose"
+							type="button"
+							aria-label="關閉預約表單"
+						>
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+
+					<p class="booking-dialog-selected" id="bookingDialogSelected"></p>
+
+					<form class="booking-inquiry-form" id="bookingInquiryForm">
+						<div class="booking-form-field">
+							<label for="bookingCustomerName">姓名</label>
+							<input id="bookingCustomerName" name="customerName" type="text" maxlength="40" autocomplete="name" required />
+						</div>
+
+						<div class="booking-form-field">
+							<label for="bookingServiceArea">施作部位</label>
+							<select id="bookingServiceArea" name="serviceArea" required>
+								<option value="">請選擇</option>
+								<option value="手部">手部</option>
+								<option value="足部">足部</option>
+								<option value="手足皆做">手足皆做</option>
+							</select>
+							<p class="booking-form-help" id="bookingBothHelp" hidden>
+								手足皆做需要預留兩個時段。以下主要欄位請先填手部需求，再於下方分別填寫足部需求。
+							</p>
+						</div>
+
+						<div class="booking-form-field">
+							<label for="bookingExtension">是否延甲</label>
+							<select id="bookingExtension" name="extension" required>
+								<option value="不需要">不需要</option>
+								<option value="延 1 指">延 1 指</option>
+								<option value="延 2 指">延 2 指</option>
+								<option value="延 3 指">延 3 指</option>
+								<option value="延 4 指">延 4 指</option>
+								<option value="延 5 指">延 5 指</option>
+								<option value="延 6 指">延 6 指</option>
+								<option value="延 7 指">延 7 指</option>
+								<option value="延 8 指">延 8 指</option>
+								<option value="延 9 指">延 9 指</option>
+								<option value="全延">全延</option>
+							</select>
+						</div>
+
+						<div class="booking-form-field">
+							<label for="bookingRemoval">是否卸甲</label>
+							<select id="bookingRemoval" name="removal" required>
+								<option value="無卸甲">無卸甲</option>
+								<option value="本店卸甲">本店卸甲</option>
+								<option value="他店卸甲">他店卸甲</option>
+							</select>
+						</div>
+
+						<div class="booking-form-field" id="bookingContinuationField" hidden>
+							<label for="bookingContinuation">卸甲後是否續作</label>
+							<select id="bookingContinuation" name="continuation">
+								<option value="卸甲後續作">卸甲後續作</option>
+								<option value="純卸甲，不續作">純卸甲，不續作</option>
+							</select>
+						</div>
+
+						<div class="booking-form-field booking-form-field-wide">
+							<label for="bookingStyle">想做的款式</label>
+							<textarea
+								id="bookingStyle"
+								name="style"
+								rows="3"
+								maxlength="240"
+								placeholder="例如：貓眼、法式、手繪、排鑽，或簡單描述喜歡的方向"
+								required
+							></textarea>
+						</div>
+
+						<div class="booking-form-field booking-form-field-wide">
+							<label for="bookingOther">其他需求</label>
+							<textarea id="bookingOther" name="other" rows="2" maxlength="180" placeholder="沒有可留空"></textarea>
+						</div>
+
+						<fieldset class="booking-both-details booking-form-field-wide" id="bookingBothDetails" hidden>
+							<legend>足部需求</legend>
+
+							<div class="booking-both-grid">
+								<div class="booking-form-field">
+									<label for="bookingFootRemoval">足部是否卸甲</label>
+									<select id="bookingFootRemoval" name="footRemoval">
+										<option value="無卸甲">無卸甲</option>
+										<option value="本店卸甲">本店卸甲</option>
+										<option value="他店卸甲">他店卸甲</option>
+									</select>
+								</div>
+
+								<div class="booking-form-field" id="bookingFootContinuationField" hidden>
+									<label for="bookingFootContinuation">足部卸甲後是否續作</label>
+									<select id="bookingFootContinuation" name="footContinuation">
+										<option value="卸甲後續作">卸甲後續作</option>
+										<option value="純卸甲，不續作">純卸甲，不續作</option>
+									</select>
+								</div>
+
+								<div class="booking-form-field booking-form-field-wide">
+									<label for="bookingFootStyle">足部想做的款式</label>
+									<textarea id="bookingFootStyle" name="footStyle" rows="3" maxlength="240"></textarea>
+								</div>
+
+								<div class="booking-form-field booking-form-field-wide">
+									<label for="bookingFootOther">足部其他需求</label>
+									<textarea id="bookingFootOther" name="footOther" rows="2" maxlength="180" placeholder="沒有可留空"></textarea>
+								</div>
+							</div>
+						</fieldset>
+
+						<p class="booking-form-reminder booking-form-field-wide">
+							送出文字後，請再於 LINE 傳送款式參考圖片及目前指甲狀況照片。
+						</p>
+
+						<div class="booking-form-actions booking-form-field-wide">
+							<button class="booking-form-button booking-form-button-secondary" id="bookingDialogCancel" type="button">
+								取消
+							</button>
+							<button class="booking-form-button" type="submit">下一步：確認預約訊息</button>
+						</div>
+					</form>
+
+					<div class="booking-message-result" id="bookingMessageResult" hidden>
+						<div class="booking-message-warning" role="status">
+							<strong>預約詢問尚未送出</strong>
+							<p>
+								目前只是產生預約訊息。請點選下方按鈕前往 LINE，並在聊天室內按下送出，
+								工作室收到訊息後才會開始確認時段。
+							</p>
+						</div>
+						<label for="bookingMessageText">預約訊息（可在前往 LINE 前修改）</label>
+						<textarea id="bookingMessageText" rows="15"></textarea>
+						<p class="booking-copy-status" id="bookingCopyStatus" aria-live="polite"></p>
+						<div class="booking-form-actions">
+							<button class="booking-form-button booking-form-button-secondary" id="bookingEditButton" type="button">
+								返回修改
+							</button>
+							<button class="booking-form-button booking-form-button-secondary" id="bookingCopyButton" type="button">
+								複製訊息
+							</button>
+							<a class="booking-form-button" id="bookingOpenLine" href="#" target="_blank" rel="noopener noreferrer">
+								下一步：前往 LINE 傳送
+							</a>
+						</div>
+					</div>
+				</div>
+			</dialog>
 		</main>
 
 		<script type="module" src="js/main.js?v=1.3.3"></script>

@@ -1,7 +1,7 @@
 import { ensureGalleryLoaded, initializeGalleryAdmin } from "./gallery-admin.js";
 
 const API_URL = "/api/admin/promotions";
-const DEFAULT_LINE_URL = "https://line.me/ti/p/6Tmd0fH59r";
+const DEFAULT_LINE_URL = "https://lin.ee/OMhvyb7";
 
 const elements = {
 	environmentNotice: document.querySelector("#environmentNotice"),

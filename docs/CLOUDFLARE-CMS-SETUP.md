@@ -15,6 +15,7 @@ vico-nail-story
 ```text
 migrations/0001_create_promotions.sql
 migrations/0002_seed_promotions.sql
+migrations/0003_update_line_official_account.sql
 ```
 
 接著到 Pages 專案的 Bindings 新增 D1 binding：

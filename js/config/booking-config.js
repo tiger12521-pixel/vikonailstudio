@@ -3,6 +3,16 @@
 /* API route used to load one week of booking availability. */
 export const BOOKING_API_URL = "/api/booking";
 
+/* LINE Official Account used by the booking inquiry form. */
+export const LINE_OFFICIAL_ACCOUNT_ID = "@201qwlwv";
+
+/* Booking slot keys shared by the API response and booking UI. */
+export const BOOKING_TIME_SLOTS = Object.freeze([
+	Object.freeze({ key: "morning", label: "09:00" }),
+	Object.freeze({ key: "afternoon", label: "13:00" }),
+	Object.freeze({ key: "evening", label: "17:00" })
+]);
+
 /* Weekday labels displayed beside each booking date. */
 export const WEEKDAY_LABELS = Object.freeze([
 	"日",

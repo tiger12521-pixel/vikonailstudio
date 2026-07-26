@@ -146,7 +146,7 @@ function normalizePromotionInput(body, existing = {}) {
 		isPermanent,
 		isPinned: toBoolean(body.isPinned),
 		buttonText: String(body.buttonText ?? existing.buttonText ?? "立即預約").trim() || "立即預約",
-		buttonUrl: String(body.buttonUrl ?? existing.buttonUrl ?? "https://line.me/ti/p/6Tmd0fH59r").trim(),
+		buttonUrl: String(body.buttonUrl ?? existing.buttonUrl ?? "https://lin.ee/OMhvyb7").trim(),
 		isActive: toBoolean(body.isActive),
 		sortOrder: Number.parseInt(body.sortOrder ?? existing.sortOrder ?? 0, 10) || 0
 	};

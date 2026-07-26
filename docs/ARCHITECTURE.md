@@ -37,7 +37,7 @@ Gallery 獨立頁使用 `gallery/gallery.css`；管理後台使用 `admin/css/ad
 js/main.js                         應用程式啟動入口
 js/config/app-info.js              版本資訊載入與 Console 顯示
 js/config/booking-config.js        預約畫面常數
-js/components/booking.js           預約畫面與互動
+js/components/booking.js           預約畫面、詢問表單、訊息模板與 LINE 連結
 js/components/promotion.js         優惠畫面、有效期間與海報 Dialog
 js/components/gallery-home.js      首頁精選作品
 js/services/booking-api.js         預約 API 呼叫
@@ -70,6 +70,8 @@ admin/js/gallery-admin.js          作品後台
 本機 Express 與 Cloudflare Pages Functions 必須維持相同的 API 輸出格式。前端只透過 `/api/booking`、`/api/promotions` 與 `/api/gallery` 取得資料。
 
 正式環境必須使用 Cloudflare Access 同時保護 `/admin/*` 與 `/api/admin/*`。
+
+預約詢問表單只在瀏覽器中整理使用者輸入，不會將姓名、款式或其他預約資料保存至網站伺服器。完成後透過 LINE URL Scheme 開啟指定官方帳號聊天室並預填文字，仍由使用者確認後自行送出。
 
 ## 版本資訊
 

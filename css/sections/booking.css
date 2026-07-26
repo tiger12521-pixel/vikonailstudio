@@ -18,6 +18,8 @@
 	.slot		單一時段格子的高度、文字與圓角
 	.available	可預約狀態（綠色）
 	.booked	已預約狀態（紅色）
+	.expired	已過時段（灰色）
+	.booking-dialog	預約詢問表單與訊息預覽
 --------------------------------------------------*/
 
 /*--------------------------------------------------
@@ -170,8 +172,13 @@
 	align-items: center;
 	justify-content: center;
 
+	width: 100%;
 	min-height: 48px;
+	padding: 0;
+	border: 0;
 	border-radius: var(--radius-small);
+
+	font-family: inherit;
 	font-size: 12px;
 	font-weight: 700;
 }
@@ -189,6 +196,23 @@
 .slot.available {
 	color: var(--color-slot-available-text);
 	background: var(--color-slot-available-bg);
+	cursor: pointer;
+
+	transition:
+		transform var(--duration-fast) ease,
+		box-shadow var(--duration-fast) ease,
+		background-color var(--duration-fast) ease;
+}
+
+.slot.available:hover {
+	background: #dff2e8;
+	transform: translateY(-2px);
+	box-shadow: 0 8px 16px rgba(47, 107, 79, 0.12);
+}
+
+.slot.available:focus-visible {
+	outline: 3px solid rgba(47, 107, 79, 0.24);
+	outline-offset: 2px;
 }
 
 .slot.booked {
@@ -196,8 +220,254 @@
 	background: var(--color-slot-booked-bg);
 }
 
+.slot.expired {
+	color: rgba(90, 74, 74, 0.48);
+	background: rgba(128, 107, 100, 0.08);
+}
+
 /* #endregion */
 
+/* #region Booking Inquiry Dialog */
+
+.booking-dialog {
+	width: min(calc(100% - 32px), 720px);
+	max-height: calc(100dvh - 32px);
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius-large);
+
+	color: var(--color-text-body);
+	background: transparent;
+	box-shadow: 0 24px 70px rgba(72, 49, 44, 0.24);
+}
+
+.booking-dialog::backdrop {
+	background: rgba(68, 48, 44, 0.48);
+	backdrop-filter: blur(4px);
+}
+
+.booking-dialog-panel {
+	overflow-y: auto;
+	max-height: calc(100dvh - 32px);
+	padding: 28px;
+
+	background: var(--color-brand-200);
+}
+
+.booking-dialog-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.booking-dialog-heading .section-label {
+	margin: 0 0 6px;
+	text-align: left;
+}
+
+.booking-dialog-heading h2 {
+	margin: 0;
+	color: var(--color-text-heading);
+	font-size: clamp(24px, 4vw, 32px);
+}
+
+.booking-dialog-close {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: 1px solid rgba(183, 131, 118, 0.2);
+	border-radius: var(--radius-circle);
+
+	color: var(--color-brand-700);
+	background: rgba(255, 255, 255, 0.8);
+	font-family: inherit;
+	font-size: 26px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.booking-dialog-selected {
+	margin: 18px 0;
+	padding: 12px 16px;
+	border-radius: var(--radius-small);
+
+	color: var(--color-text-brand);
+	background: var(--color-brand-300);
+	font-weight: 700;
+}
+
+.booking-inquiry-form {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+}
+
+.booking-inquiry-form[hidden] {
+	display: none;
+}
+
+.booking-form-field {
+	display: grid;
+	align-content: start;
+	gap: 7px;
+}
+
+.booking-form-field-wide {
+	grid-column: 1 / -1;
+}
+
+.booking-form-field label,
+.booking-message-result > label {
+	color: var(--color-text-heading);
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.booking-form-field input,
+.booking-form-field select,
+.booking-form-field textarea,
+.booking-message-result textarea {
+	width: 100%;
+	padding: 11px 13px;
+	border: 1px solid rgba(183, 131, 118, 0.28);
+	border-radius: 12px;
+
+	color: var(--color-text-primary);
+	background: rgba(255, 255, 255, 0.88);
+	font: inherit;
+	line-height: 1.6;
+}
+
+.booking-form-field textarea,
+.booking-message-result textarea {
+	resize: vertical;
+}
+
+.booking-form-field input:focus,
+.booking-form-field select:focus,
+.booking-form-field textarea:focus,
+.booking-message-result textarea:focus {
+	border-color: var(--color-brand-500);
+	outline: 3px solid rgba(183, 131, 118, 0.13);
+}
+
+.booking-form-help,
+.booking-form-reminder {
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: 13px;
+	line-height: 1.7;
+}
+
+.booking-form-help {
+	padding: 9px 11px;
+	border-radius: 10px;
+	background: #fff0e8;
+}
+
+.booking-form-reminder {
+	padding: 12px 14px;
+	border: 1px solid rgba(217, 139, 160, 0.18);
+	border-radius: var(--radius-small);
+	background: #fff6f7;
+}
+
+.booking-both-details {
+	padding: 16px;
+	border: 1px solid rgba(183, 131, 118, 0.22);
+	border-radius: var(--radius-medium);
+}
+
+.booking-both-details legend {
+	padding: 0 8px;
+	color: var(--color-text-heading);
+	font-weight: 700;
+}
+
+.booking-both-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+}
+
+.booking-form-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 10px;
+
+	margin-top: 4px;
+}
+
+.booking-form-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	min-height: 44px;
+	padding: 10px 20px;
+	border: 0;
+	border-radius: var(--radius-pill);
+
+	color: var(--color-white);
+	background: var(--color-brand-700);
+	font: inherit;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.booking-form-button-secondary {
+	border: 1px solid rgba(183, 131, 118, 0.26);
+	color: var(--color-text-brand);
+	background: rgba(255, 255, 255, 0.8);
+}
+
+.booking-message-result {
+	display: grid;
+	gap: 10px;
+}
+
+.booking-message-result[hidden] {
+	display: none;
+}
+
+.booking-message-warning {
+	padding: 14px 16px;
+	border: 1px solid rgba(201, 111, 138, 0.3);
+	border-radius: var(--radius-small);
+
+	color: var(--color-text-body);
+	background: #fff1f3;
+	line-height: 1.7;
+}
+
+.booking-message-warning strong {
+	display: block;
+	color: var(--color-slot-booked-text);
+	font-size: 16px;
+}
+
+.booking-message-warning p {
+	margin: 4px 0 0;
+	font-size: 14px;
+}
+
+.booking-copy-status {
+	min-height: 22px;
+	margin: 0;
+	color: var(--color-slot-available-text);
+	font-size: 13px;
+}
+
+/* #endregion */
 
 .booking-line-link {
 	display: flex;
@@ -240,5 +510,36 @@
 
 	.booking-time-labels span {
 		font-size: 12px;
+	}
+
+	.booking-dialog {
+		width: min(calc(100% - 16px), 720px);
+		max-height: calc(100dvh - 16px);
+	}
+
+	.booking-dialog-panel {
+		max-height: calc(100dvh - 16px);
+		padding: 22px 16px;
+	}
+
+	.booking-inquiry-form {
+		grid-template-columns: 1fr;
+	}
+
+	.booking-both-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.booking-form-field-wide {
+		grid-column: auto;
+	}
+
+	.booking-form-actions {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.booking-form-button {
+		width: 100%;
 	}
 }

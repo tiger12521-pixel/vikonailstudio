@@ -16,7 +16,7 @@ export const PROMOTION_CONFIG = Object.freeze({
 	fallbackText:
 		"活動內容即將更新。歡迎追蹤 Instagram 或加入 LINE，第一時間收到薇可美甲的最新活動資訊。",
 	instagramUrl: "https://www.instagram.com/nailstory03/",
-	lineUrl: "https://line.me/ti/p/6Tmd0fH59r"
+	lineUrl: "https://lin.ee/OMhvyb7"
 });
 
 /* #endregion */

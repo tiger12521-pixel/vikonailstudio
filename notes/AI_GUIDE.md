@@ -57,6 +57,9 @@
 - 新功能依責任建立 `components/`、`services/`、`config/` 或 `utils/` 模組。
 - 保持 ES Modules 的 `import / export`。
 - API 路徑 `/api/booking` 未經確認不得更改。
+- 預約詢問資料只在瀏覽器整理並帶入 LINE，不保存至網站伺服器。
+- 預約訊息使用的 LINE 官方帳號 ID 放在 `booking-config.js`。
+- 網站不能替使用者送出 LINE 訊息，仍須由使用者確認後自行送出。
 
 ## HTML 架構
 
@@ -105,7 +108,9 @@
 3. 檢查桌機版。
 4. 檢查手機寬度。
 5. 檢查 Booking 上一週與下一週。
-6. 若修改 Promotion，檢查輪播、海報放大與 API fallback。
-7. 若修改 Gallery，檢查首頁精選、分類、Lightbox 與後台操作。
-8. 檢查 Console 無紅色錯誤。
-9. 執行 `git diff` 確認沒有額外修改。
+6. 點擊可約時段，檢查手部、足部與手足皆做表單。
+7. 檢查產生的預約文字、複製功能與 LINE 官方帳號連結。
+8. 若修改 Promotion，檢查輪播、海報放大與 API fallback。
+9. 若修改 Gallery，檢查首頁精選、分類、Lightbox 與後台操作。
+10. 檢查 Console 無紅色錯誤。
+11. 執行 `git diff` 確認沒有額外修改。

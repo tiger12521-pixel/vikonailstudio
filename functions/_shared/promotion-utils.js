@@ -114,7 +114,7 @@ export function readPromotionForm(formData, existing = {}) {
 		isPermanent,
 		isPinned: toBoolean(formData.get("isPinned")),
 		buttonText: getFormValue(formData, "buttonText", existing.buttonText || "立即預約") || "立即預約",
-		buttonUrl: getFormValue(formData, "buttonUrl", existing.buttonUrl || "https://line.me/ti/p/6Tmd0fH59r"),
+		buttonUrl: getFormValue(formData, "buttonUrl", existing.buttonUrl || "https://lin.ee/OMhvyb7"),
 		isActive: toBoolean(formData.get("isActive")),
 		sortOrder: Number.parseInt(getFormValue(formData, "sortOrder", String(existing.sortOrder || 0)), 10) || 0
 	};
