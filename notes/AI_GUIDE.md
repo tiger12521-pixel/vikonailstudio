@@ -19,9 +19,14 @@
 - `css/base.css`：全站 reset、HTML、Body 與共用基本樣式。
 - `css/sections/header.css`：Header、Logo、社群圖示。
 - `css/sections/hero.css`：Hero 背景、品牌 Logo、文案、按鈕、動畫與手機版。
+- `css/sections/promotion.css`：最新活動輪播、海報與 Dialog。
 - `css/sections/gallery.css`：作品集。
 - `css/sections/price.css`：價目表。
+- `css/sections/booking-guide.css`：預約須知。
+- `css/sections/faq.css`：美甲常見問題。
 - `css/sections/booking.css`：預約區塊。
+- `gallery/gallery.css`：完整作品頁。
+- `admin/css/admin.css`：活動與作品管理後台。
 
 規則：
 
@@ -36,8 +41,15 @@
 - `js/config/app-info.js`：讀取與顯示版本資訊。
 - `js/config/booking-config.js`：Booking 常數與設定。
 - `js/components/booking.js`：Booking UI 與互動。
+- `js/components/promotion.js`：最新活動輪播與海報 Dialog。
+- `js/components/gallery-home.js`：首頁精選作品。
 - `js/services/booking-api.js`：呼叫 Booking API。
+- `js/services/promotion-data.js`：讀取活動 API 與靜態備援資料。
+- `js/services/gallery-data.js`：呼叫 Gallery API。
 - `js/utils/date.js`：日期計算與格式化。
+- `gallery/gallery.js`：分類篩選與 Lightbox。
+- `admin/js/admin.js`：活動管理。
+- `admin/js/gallery-admin.js`：作品管理。
 
 規則：
 
@@ -52,9 +64,12 @@
 
 1. Header
 2. Hero
-3. Gallery
-4. Price
-5. Booking
+3. Promotion
+4. Gallery
+5. Price
+6. Booking Guide
+7. FAQ
+8. Booking
 
 規則：
 
@@ -71,6 +86,18 @@
 
 修改 Booking 前，要同時確認本機與 Cloudflare Pages Functions 的行為。
 
+## Promotion 與 Gallery 注意事項
+
+- 優惠公開 API：`/api/promotions`。
+- 優惠管理 API：`/api/admin/promotions`。
+- 優惠資料由 API 優先，`data/promotions.json` 作為前台 fallback。
+- Gallery 公開 API：`/api/gallery`。
+- Gallery 管理 API：`/api/admin/gallery`。
+- 首頁最多載入六件精選作品；完整作品頁位於 `/gallery/`。
+- 正式環境的 Gallery metadata 與圖片使用 `GALLERY_ASSETS` R2 binding。
+- V1.3.2 起每件作品使用獨立 metadata JSON，不可改回整份清單覆寫。
+- 正式環境必須同時使用 Cloudflare Access 保護 `/admin/*` 與 `/api/admin/*`。
+
 ## 完成修改後最低檢查
 
 1. `npm start`
@@ -78,5 +105,7 @@
 3. 檢查桌機版。
 4. 檢查手機寬度。
 5. 檢查 Booking 上一週與下一週。
-6. 檢查 Console 無紅色錯誤。
-7. 執行 `git diff` 確認沒有額外修改。
+6. 若修改 Promotion，檢查輪播、海報放大與 API fallback。
+7. 若修改 Gallery，檢查首頁精選、分類、Lightbox 與後台操作。
+8. 檢查 Console 無紅色錯誤。
+9. 執行 `git diff` 確認沒有額外修改。

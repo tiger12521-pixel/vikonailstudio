@@ -2,7 +2,15 @@
 
 ## HTML
 
-目前網站以單頁 `index.html` 為主。各區塊使用 `#region` 註解分隔，並保留既有 class 與 ID，避免影響 CSS 與 JavaScript 掛鉤。
+網站包含三個主要頁面：
+
+```text
+index.html              品牌首頁
+gallery/index.html      完整作品集、分類篩選與 Lightbox
+admin/index.html        活動與作品管理後台
+```
+
+首頁目前依序包含 Header、Hero、Promotion、Gallery、Price、Booking Guide、FAQ 與 Booking。大型區塊使用 `#region` 註解分隔，並保留既有 class 與 ID，避免影響 CSS 與 JavaScript 掛鉤。
 
 ## CSS
 
@@ -12,11 +20,16 @@
 2. `base.css`：全站基礎設定。
 3. `sections/header.css`
 4. `sections/hero.css`
-5. `sections/gallery.css`
-6. `sections/price.css`
-7. `sections/booking.css`
+5. `sections/promotion.css`
+6. `sections/gallery.css`
+7. `sections/price.css`
+8. `sections/booking-guide.css`
+9. `sections/faq.css`
+10. `sections/booking.css`
 
 修改畫面時，優先調整對應 section；跨區共用的顏色或尺寸再放入 `tokens.css`。
+
+Gallery 獨立頁使用 `gallery/gallery.css`；管理後台使用 `admin/css/admin.css`。兩者仍共用全站 Design Tokens 與基礎樣式。
 
 ## JavaScript
 
@@ -26,20 +39,37 @@ js/config/app-info.js              版本資訊載入與 Console 顯示
 js/config/booking-config.js        預約畫面常數
 js/components/booking.js           預約畫面與互動
 js/components/promotion.js         優惠畫面、有效期間與海報 Dialog
+js/components/gallery-home.js      首頁精選作品
 js/services/booking-api.js         預約 API 呼叫
 js/services/promotion-data.js      優惠資料載入
+js/services/gallery-data.js        Gallery API 呼叫
 js/config/promotion-config.js      優惠資料來源與備援連結
+js/config/gallery-config.js        Gallery 路徑與首頁顯示數量
 js/utils/date.js                   日期共用函式
+gallery/gallery.js                 作品分類篩選與 Lightbox
+admin/js/admin.js                  活動後台
+admin/js/gallery-admin.js          作品後台
 ```
 
 `main.js` 只負責初始化，不應累積大型功能。新增功能時，依責任放入 `components`、`services`、`config` 或 `utils`。
 
 ## API
 
-- 線上：`functions/api/booking.js`
-- 本機：`server.js`
+- 本機 API 與靜態檔案伺服器：`server.js`
+- 線上公開 API：
+  - `functions/api/booking.js`
+  - `functions/api/promotions/index.js`
+  - `functions/api/gallery/index.js`
+- 線上管理 API：
+  - `functions/api/admin/promotions/`
+  - `functions/api/admin/gallery/`
+- 共用資料處理：
+  - `functions/_shared/promotion-utils.js`
+  - `functions/_shared/gallery-utils.js`
 
-兩邊必須維持相同的 API 輸出格式，前端只透過 `/api/booking` 取得資料。
+本機 Express 與 Cloudflare Pages Functions 必須維持相同的 API 輸出格式。前端只透過 `/api/booking`、`/api/promotions` 與 `/api/gallery` 取得資料。
+
+正式環境必須使用 Cloudflare Access 同時保護 `/admin/*` 與 `/api/admin/*`。
 
 ## 版本資訊
 
@@ -56,4 +86,20 @@ js/services/promotion-data.js                資料讀取與格式檢查
 js/components/promotion.js                   畫面產生、日期篩選與放大檢視
 ```
 
-目前由靜態 JSON 提供資料，前台元件不直接依賴檔案實作。日後建置管理後台時，可將資料服務切換至 `/api/promotions`，保留既有畫面模組。
+前台優先透過 `/api/promotions` 讀取 Cloudflare D1 資料；API 無法使用時，退回 `data/promotions.json`。桌機與手機海報在正式環境儲存於 `PROMOTION_IMAGES` R2 bucket，本機則儲存於 `assets/uploads/promotions/`。
+
+## Gallery 資料
+
+```text
+js/components/gallery-home.js               首頁載入最多六件精選作品
+gallery/index.html                           完整作品頁
+gallery/gallery.js                           多分類篩選、Lightbox 與鍵盤導覽
+admin/js/gallery-admin.js                    上傳、編輯、顯示、精選與排序
+functions/api/gallery/index.js               線上公開 API
+functions/api/admin/gallery/                 線上管理 API
+functions/_shared/gallery-utils.js           R2 Metadata 共用處理
+```
+
+本機 Gallery metadata 寫入 `data/gallery.json`，圖片寫入 `assets/uploads/gallery/`。正式環境的 metadata 與圖片使用 `GALLERY_ASSETS` R2 binding。
+
+自 V1.3.2 起，每件作品使用獨立的 `gallery/items/<id>.json`，避免同時新增作品時覆寫整份 metadata。系統仍相容讀取舊版 `gallery/metadata/gallery.json`。

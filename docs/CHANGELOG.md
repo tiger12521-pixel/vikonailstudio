@@ -2,7 +2,7 @@
 
 本專案採用 Semantic Versioning：`MAJOR.MINOR.PATCH`。
 
-## v1.3.3 - Booking UX improvement
+## v1.3.3 - Booking UX Improvement
 
 ### Changed
 
@@ -11,17 +11,13 @@
 - 預約須知新增手足同時施作需預留兩個時段的說明。
 - 預約區新增「前往 LINE 預約」按鈕。
 
-# Changelog
-
-## v1.3.2 - Gallery metadata concurrency fix
+## v1.3.2 - Gallery Metadata Concurrency Fix
 
 ### Fixed
 
 - 修正正式環境連續上傳作品時，單一 R2 `gallery.json` 產生最後寫入覆蓋前次資料的問題。
 - Gallery Metadata 改為每件作品各自儲存一份 R2 JSON，避免不同作品互相覆蓋。
 - 保留 V1.3.1 舊版 `gallery.json` 相容讀取，不需要手動搬移既有作品。
-
-
 
 ## [1.3.1] - 2026-07-12
 
@@ -45,8 +41,6 @@
 - Added a permanent loyalty reward campaign and responsive poster assets.
 - Added autoplay, previous/next controls, indicator dots, mobile swipe, ordering, pinned campaigns, and permanent campaign support.
 - Preserved all other v1.1.1 website sections and behavior.
-
-# 更新紀錄
 
 ## v1.1.1 - Data-driven promotion
 
@@ -89,10 +83,6 @@
 
 - 更新 Release、常用指令、部署檢查與疑難排解文件。
 - 專案版本更新為 1.0.1。
-
-# Changelog
-
-本專案採用 Semantic Versioning：`MAJOR.MINOR.PATCH`。
 
 ## [1.0.0] - 2026-07-11
 
