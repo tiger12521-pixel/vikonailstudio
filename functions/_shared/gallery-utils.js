@@ -1,5 +1,20 @@
 const LEGACY_METADATA_KEY = "gallery/metadata/gallery.json";
 const ITEM_PREFIX = "gallery/items/";
+const CATEGORY_IMAGE_SLUGS = {
+	"單色": "solid-color",
+	"貓眼": "cat-eye",
+	"手繪": "hand-painted",
+	"法式": "french",
+	"暈染": "ombre",
+	"新娘": "bridal",
+	"足部": "pedicure",
+	"裸色": "nude",
+	"漸層": "gradient",
+	"排鑽鑽石": "rhinestone",
+	"全延甲": "nail-extension",
+	"鏡面": "chrome",
+	"其他": "creative"
+};
 
 export function jsonResponse(data, status = 200) {
 	return Response.json(data, {
@@ -121,10 +136,13 @@ export function readGalleryForm(formData, existing = {}) {
 		.filter(value => typeof value === "string")
 		.map(value => value.trim())
 		.filter(Boolean);
+	const category = categories.length ? categories : (existing.category || []);
+	const title = String(formData.get("title") ?? existing.title ?? "").trim();
 
 	return {
-		title: String(formData.get("title") ?? existing.title ?? "").trim(),
-		category: categories.length ? categories : (existing.category || []),
+		title,
+		imageAlt: [title, `苗栗${category.join("、")}美甲作品`].filter(Boolean).join("｜"),
+		category,
 		featured: toBoolean(formData.get("featured")),
 		isActive: toBoolean(formData.get("isActive")),
 		date: String(formData.get("date") ?? existing.date ?? new Date().toISOString().slice(0, 10)).trim(),
@@ -133,7 +151,17 @@ export function readGalleryForm(formData, existing = {}) {
 	};
 }
 
-export async function uploadGalleryImage(env, file, id) {
+function createGalleryImageName(values, extension) {
+	const categorySlug = (values.category || [])
+		.map(category => CATEGORY_IMAGE_SLUGS[category])
+		.filter(Boolean)
+		.slice(0, 2)
+		.join("-");
+	const parts = ["miaoli", "nail-art", categorySlug].filter(Boolean);
+	return `${parts.join("-")}-${crypto.randomUUID().slice(0, 8)}.${extension}`;
+}
+
+export async function uploadGalleryImage(env, file, id, values = {}) {
 	if (!(file instanceof File) || file.size === 0) return null;
 
 	const allowed = new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -145,7 +173,7 @@ export async function uploadGalleryImage(env, file, id) {
 		"image/png": "png",
 		"image/webp": "webp"
 	}[file.type];
-	const key = `gallery/images/${id}/${Date.now()}.${ext}`;
+	const key = `gallery/images/${id}/${createGalleryImageName(values, ext)}`;
 
 	await env.GALLERY_ASSETS.put(key, file.stream(), {
 		httpMetadata: {

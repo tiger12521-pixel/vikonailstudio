@@ -15,7 +15,7 @@ export async function onRequestPut(context) {
 
 		const formData = await context.request.formData();
 		const values = readGalleryForm(formData, existing);
-		const uploaded = await uploadGalleryImage(context.env, formData.get("image"), existing.id);
+		const uploaded = await uploadGalleryImage(context.env, formData.get("image"), existing.id, values);
 		if (uploaded && existing.imageKey) await context.env.GALLERY_ASSETS.delete(existing.imageKey);
 
 		await saveGalleryItem(context.env, {

@@ -8,7 +8,7 @@ function createCard(item) {
 	link.setAttribute("aria-label", item.title || "查看美甲作品");
 	const image = document.createElement("img");
 	image.src = item.image;
-	image.alt = item.title || `薇可美甲作品 ${item.category?.join("、") || ""}`.trim();
+	image.alt = item.imageAlt || item.title || `苗栗薇可美甲作品 ${item.category?.join("、") || ""}`.trim();
 	image.loading = "lazy";
 	link.append(image);
 	return link;

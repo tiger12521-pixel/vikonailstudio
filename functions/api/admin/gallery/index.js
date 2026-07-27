@@ -23,7 +23,7 @@ export async function onRequestPost(context) {
 		const formData = await context.request.formData();
 		const id = createGalleryId();
 		const values = readGalleryForm(formData);
-		const uploaded = await uploadGalleryImage(context.env, formData.get("image"), id);
+		const uploaded = await uploadGalleryImage(context.env, formData.get("image"), id, values);
 		if (!uploaded) return jsonResponse({ error: "新增作品時必須上傳圖片。" }, 400);
 
 		const now = new Date().toISOString();

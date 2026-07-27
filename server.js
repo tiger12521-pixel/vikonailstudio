@@ -48,7 +48,7 @@ const galleryUpload = multer({
 		destination: GALLERY_UPLOAD_DIRECTORY,
 		filename: (request, file, callback) => {
 			const extension = path.extname(file.originalname).toLowerCase() || ".jpg";
-			callback(null, `${Date.now()}-${crypto.randomUUID()}${extension}`);
+			callback(null, `miaoli-nail-art-${Date.now()}-${crypto.randomUUID().slice(0, 8)}${extension}`);
 		}
 	}),
 	limits: { fileSize: 12 * 1024 * 1024 },
@@ -169,9 +169,12 @@ function writeGalleryData(data) {
 
 function normalizeGalleryInput(body, existing = {}) {
 	const rawCategories = Array.isArray(body.category) ? body.category : (body.category ? [body.category] : []);
+	const category = rawCategories.length ? [...new Set(rawCategories.map((value) => String(value).trim()).filter(Boolean))] : (existing.category || []);
+	const title = String(body.title ?? existing.title ?? "").trim();
 	return {
-		title: String(body.title ?? existing.title ?? "").trim(),
-		category: rawCategories.length ? [...new Set(rawCategories.map((value) => String(value).trim()).filter(Boolean))] : (existing.category || []),
+		title,
+		imageAlt: [title, `苗栗${category.join("、")}美甲作品`].filter(Boolean).join("｜"),
+		category,
 		featured: toBoolean(body.featured),
 		isActive: toBoolean(body.isActive),
 		date: String(body.date ?? existing.date ?? new Date().toISOString().slice(0, 10)).trim(),
