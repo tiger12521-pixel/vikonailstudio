@@ -101,7 +101,8 @@ function createBookingDay(date, dayData) {
 
 function formatSelectedDate(dateKey) {
 	const [year, month, day] = dateKey.split("-");
-	return `${year}/${month}/${day}`;
+	const date = new Date(Number(year), Number(month) - 1, Number(day));
+	return `${year}/${month}/${day} (${WEEKDAY_LABELS[date.getDay()]})`;
 }
 
 function setResultVisibility(isVisible) {
