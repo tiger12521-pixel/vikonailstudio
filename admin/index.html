@@ -7,10 +7,10 @@
 	<title>網站管理｜Nail Story 薇可工作坊</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Allura&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" />
 	<link
 		rel="stylesheet"
-		href="/admin/css/admin.css?v=1.3.3"
+		href="/admin/css/admin.css?v=1.4.3"
 	/>
 </head>
 <body>
@@ -26,6 +26,7 @@
 		<nav class="admin-tabs" aria-label="後台功能">
 			<button class="admin-tab is-active" type="button" data-admin-tab="promotions">活動管理</button>
 			<button class="admin-tab" type="button" data-admin-tab="gallery">作品管理</button>
+			<button class="admin-tab" type="button" data-admin-tab="retouch">一鍵製作作品照</button>
 		</nav>
 		<section class="admin-notice" id="environmentNotice" hidden>
 			<strong>本機開發模式</strong>
@@ -54,6 +55,19 @@
 			<div class="gallery-admin-list" id="galleryAdminList" aria-live="polite"><p class="empty-message">切換至作品管理後載入資料。</p></div>
 		</section>
 	</main>
+
+	<section class="admin-main" data-admin-panel="retouch" hidden>
+		<section class="admin-panel">
+			<div class="admin-panel-heading retouch-heading"><div><p class="admin-section-label">Nail Story · 薇可工作坊</p><h2>一鍵製作美甲作品照</h2><p class="retouch-intro">將主圖、雙拇指特寫與品牌浮水印合成為一張作品照；只做照片合成，不使用 AI 重繪或修改甲面內容。</p></div></div>
+			<div class="retouch-workspace" aria-label="美甲作品照製作工具">
+				<label class="retouch-upload" for="retouchMainImage"><span class="retouch-step">01</span><strong>上傳主圖</strong><small>雙手十指完整作品照</small><input id="retouchMainImage" type="file" accept="image/jpeg,image/png,image/webp" /><span class="button">選擇主圖</span><img id="retouchMainPreview" hidden alt="主圖預覽" /></label>
+				<label class="retouch-upload" for="retouchThumbImage"><span class="retouch-step">02</span><strong>上傳拇指特寫</strong><small>同一組作品的雙拇指甲面</small><input id="retouchThumbImage" type="file" accept="image/jpeg,image/png,image/webp" /><span class="button">選擇特寫</span><img id="retouchThumbPreview" hidden alt="特寫預覽" /></label>
+				<div class="retouch-controls"><fieldset><legend>特寫圓形位置</legend><div class="position-options" data-retouch-position="detail"><button type="button" data-position="top-left">左上</button><button type="button" data-position="top-right" class="is-selected">右上</button><button type="button" data-position="bottom-left">左下</button><button type="button" data-position="bottom-right">右下</button></div></fieldset><fieldset class="watermark-settings"><legend>浮水印樣式</legend><div class="watermark-style-options" data-watermark-style><button type="button" data-style="romantic" class="is-selected"><em>薇可工作坊</em><span>浪漫手寫</span></button><button type="button" data-style="classic"><strong>NAIL STORY</strong><span>經典品牌</span></button><button type="button" data-style="minimal"><strong>VICO</strong><span>極簡簽名</span></button><button type="button" data-style="seal"><b>薇可</b><span>印章感</span></button></div></fieldset><fieldset class="watermark-settings"><legend>浮水印位置</legend><div class="position-options" data-retouch-position="watermark"><button type="button" data-position="top-left">左上</button><button type="button" data-position="top-right">右上</button><button type="button" data-position="bottom-left" class="is-selected">左下</button><button type="button" data-position="bottom-right">右下</button></div><div class="watermark-sliders"><label>左右 <input id="retouchWatermarkX" type="range" min="0" max="100" value="0" /><output for="retouchWatermarkX">左</output></label><label>上下 <input id="retouchWatermarkY" type="range" min="0" max="100" value="100" /><output for="retouchWatermarkY">下</output></label></div></fieldset><label class="toggle"><input id="retouchTestBadge" type="checkbox" /><span>標示測試示意（不同作品照片）</span></label></div>
+				<div class="retouch-actions"><button class="button button-primary" id="createRetouchButton" type="button">製作作品照</button><button class="button" id="downloadRetouchButton" type="button" disabled>下載成品</button><button class="button" id="sendRetouchToGalleryButton" type="button" disabled>送到作品管理</button></div>
+				<p class="form-message" id="retouchMessage" role="status">請先上傳兩張照片；所有處理都在此瀏覽器中完成。</p><div class="retouch-result" id="retouchResult"><p>完成後，成品會顯示在這裡</p><img id="retouchOutput" hidden alt="完成的美甲作品照" /></div>
+			</div>
+		</section>
+	</section>
 
 	<dialog class="editor-dialog" id="promotionDialog">
 		<form class="editor-form" id="promotionForm">
@@ -157,7 +171,7 @@
 
 	<script
 		type="module"
-		src="/admin/js/admin.js?v=1.3.3"
+		src="/admin/js/admin.js?v=1.4.3"
 	></script>
 </body>
 </html>

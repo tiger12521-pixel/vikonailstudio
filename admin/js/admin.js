@@ -1,4 +1,5 @@
-import { ensureGalleryLoaded, initializeGalleryAdmin } from "./gallery-admin.js";
+import { ensureGalleryLoaded, initializeGalleryAdmin, openGalleryEditorWithImage } from "./gallery-admin.js";
+import { initializeRetouchTool } from "./retouch-tool.js";
 
 const API_URL = "/api/admin/promotions";
 const DEFAULT_LINE_URL = "https://lin.ee/OMhvyb7";
@@ -198,6 +199,7 @@ function initializeAdminTabs() {
 			document.querySelectorAll("[data-admin-tab]").forEach((item) => item.classList.toggle("is-active", item === button));
 			document.querySelectorAll("[data-admin-panel]").forEach((panel) => { panel.hidden = panel.dataset.adminPanel !== tab; });
 			if (tab === "gallery") await ensureGalleryLoaded();
+			if (tab === "retouch") document.querySelector("#retouchMainImage")?.focus();
 		});
 	});
 }
@@ -206,6 +208,7 @@ function initialize() {
 	if (isLocalEnvironment()) elements.environmentNotice.hidden = false;
 	initializeAdminTabs();
 	initializeGalleryAdmin();
+	initializeRetouchTool({ openGalleryWithImage: async (file) => { document.querySelector('[data-admin-tab="gallery"]').click(); await ensureGalleryLoaded(); openGalleryEditorWithImage(file); } });
 	elements.createButton.addEventListener("click", () => openEditor());
 	elements.closeButton.addEventListener("click", closeEditor);
 	elements.cancelButton.addEventListener("click", closeEditor);
