@@ -8,9 +8,21 @@ export const LINE_OFFICIAL_ACCOUNT_ID = "@201qwlwv";
 
 /* Booking slot keys shared by the API response and booking UI. */
 export const BOOKING_TIME_SLOTS = Object.freeze([
-	Object.freeze({ key: "morning", label: "09:00" }),
-	Object.freeze({ key: "afternoon", label: "13:00" }),
-	Object.freeze({ key: "evening", label: "17:00" })
+	Object.freeze({
+		key: "morning",
+		label: "早上",
+		startTimes: Object.freeze(["08:00", "08:30", "09:00"])
+	}),
+	Object.freeze({
+		key: "afternoon",
+		label: "中午",
+		startTimes: Object.freeze(["12:30", "13:00"])
+	}),
+	Object.freeze({
+		key: "evening",
+		label: "晚上",
+		startTimes: Object.freeze(["17:00", "17:30", "18:00"])
+	})
 ]);
 
 /* Weekday labels displayed beside each booking date. */

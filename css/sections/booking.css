@@ -220,6 +220,11 @@
 	background: var(--color-slot-booked-bg);
 }
 
+.slot.closed {
+	color: var(--color-text-muted);
+	background: rgba(189, 179, 174, 0.22);
+}
+
 .slot.expired {
 	color: rgba(90, 74, 74, 0.48);
 	background: rgba(128, 107, 100, 0.08);
@@ -310,6 +315,48 @@
 
 .booking-inquiry-form[hidden] {
 	display: none;
+}
+
+.booking-first-time-step,
+.booking-guide-preview {
+	margin-top: 18px;
+	padding: 20px;
+	border: 1px solid rgba(183, 131, 118, 0.22);
+	border-radius: var(--radius-medium);
+	background: rgba(255, 255, 255, 0.54);
+}
+
+.booking-first-time-step[hidden],
+.booking-guide-preview[hidden] {
+	display: none;
+}
+
+.booking-first-time-step h3,
+.booking-guide-preview h3 {
+	margin: 0;
+	color: var(--color-text-heading);
+	font-size: 18px;
+}
+
+.booking-first-time-step p {
+	margin: 10px 0 0;
+	line-height: 1.7;
+}
+
+.booking-guide-preview ul {
+	display: grid;
+	gap: 10px;
+	margin: 14px 0 0;
+	padding-left: 1.35em;
+	line-height: 1.7;
+}
+
+.booking-step-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 20px;
 }
 
 .booking-form-field {

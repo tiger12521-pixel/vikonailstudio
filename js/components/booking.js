@@ -29,7 +29,15 @@ const bookingElements = {
 	dialog: document.getElementById("bookingDialog"),
 	dialogClose: document.getElementById("bookingDialogClose"),
 	dialogCancel: document.getElementById("bookingDialogCancel"),
+	dialogTitle: document.getElementById("bookingDialogTitle"),
 	selectedSlot: document.getElementById("bookingDialogSelected"),
+	firstTimeStep: document.getElementById("bookingFirstTimeStep"),
+	firstTimeYes: document.getElementById("bookingFirstTimeYes"),
+	firstTimeNo: document.getElementById("bookingFirstTimeNo"),
+	guidePreview: document.getElementById("bookingGuidePreview"),
+	guideBack: document.getElementById("bookingGuideBack"),
+	guideRead: document.getElementById("bookingGuideRead"),
+	startTime: document.getElementById("bookingStartTime"),
 	form: document.getElementById("bookingInquiryForm"),
 	serviceArea: document.getElementById("bookingServiceArea"),
 	bothHelp: document.getElementById("bookingBothHelp"),
@@ -49,8 +57,8 @@ const bookingElements = {
 let currentWeekStart = getMonday(new Date());
 let selectedBookingSlot = null;
 
-function isBookingSlotPast(date, timeLabel, now = new Date()) {
-	const [hours, minutes] = timeLabel.split(":").map(Number);
+function isBookingSlotPast(date, lastStartTime, now = new Date()) {
+	const [hours, minutes] = lastStartTime.split(":").map(Number);
 	const slotDate = new Date(date);
 	slotDate.setHours(hours, minutes, 0, 0);
 
@@ -59,16 +67,17 @@ function isBookingSlotPast(date, timeLabel, now = new Date()) {
 
 /* Creates one interactive available slot or one non-interactive status slot. */
 function createSlot(isAvailable, date, timeSlot) {
-	const isPast = isBookingSlotPast(date, timeSlot.label);
-	const canBook = isAvailable && !isPast;
-	const statusText = isPast ? "已過" : (isAvailable ? "可約" : "已滿");
-	const className = isPast ? "expired" : (isAvailable ? "available" : "booked");
+	const isClosed = date.getDay() === 6;
+	const isPast = isBookingSlotPast(date, timeSlot.startTimes.at(-1));
+	const canBook = isAvailable && !isPast && !isClosed;
+	const statusText = isClosed ? "公休" : (isPast ? "已過" : (isAvailable ? "可約" : "已滿"));
+	const className = isClosed ? "closed" : (isPast ? "expired" : (isAvailable ? "available" : "booked"));
 	const tagName = canBook ? "button" : "div";
 	const interactiveAttributes = canBook
 		? `
 			type="button"
 			data-booking-date="${formatDateKey(date)}"
-			data-booking-time="${timeSlot.label}"
+			data-booking-slot="${timeSlot.key}"
 			aria-label="${formatShortDate(date)} ${timeSlot.label} 可預約，開啟預約表單"
 		`
 		: "";
@@ -110,6 +119,20 @@ function setResultVisibility(isVisible) {
 	bookingElements.messageResult.hidden = !isVisible;
 }
 
+function showBookingStep(step) {
+	const isFirstTimeStep = step === "first-time";
+	const isGuideStep = step === "guide";
+	const isFormStep = step === "form";
+
+	bookingElements.firstTimeStep.hidden = !isFirstTimeStep;
+	bookingElements.guidePreview.hidden = !isGuideStep;
+	bookingElements.form.hidden = !isFormStep;
+	bookingElements.messageResult.hidden = true;
+	bookingElements.dialogTitle.textContent = isGuideStep
+		? "預約須知"
+		: (isFormStep ? "填寫預約詢問" : "預約詢問");
+}
+
 function synchronizeConditionalFields() {
 	const isBoth = bookingElements.serviceArea.value === "手足皆做";
 	const hasRemoval = bookingElements.removal.value !== "無卸甲";
@@ -127,14 +150,41 @@ function synchronizeConditionalFields() {
 	bookingElements.form.elements.footOther.disabled = !isBoth;
 }
 
-function openBookingDialog(dateKey, time) {
-	selectedBookingSlot = { dateKey, time };
-	bookingElements.form.reset();
-	bookingElements.copyStatus.textContent = "";
+function updateSelectedSlotText() {
 	bookingElements.selectedSlot.textContent =
-		`詢問時段：${formatSelectedDate(dateKey)} ${time}`;
-	setResultVisibility(false);
+		`詢問時段：${formatSelectedDate(selectedBookingSlot.dateKey)} ${selectedBookingSlot.label} ${selectedBookingSlot.startTime}`;
+}
+
+function getAvailableStartTimes(dateKey, startTimes, now = new Date()) {
+	return startTimes.filter((startTime) => {
+		const [hours, minutes] = startTime.split(":").map(Number);
+		const startDate = new Date(`${dateKey}T00:00:00`);
+		startDate.setHours(hours, minutes, 0, 0);
+		return startDate > now;
+	});
+}
+
+function openBookingDialog(dateKey, slotKey) {
+	const timeSlot = BOOKING_TIME_SLOTS.find((slot) => slot.key === slotKey);
+	const startTimes = timeSlot
+		? getAvailableStartTimes(dateKey, timeSlot.startTimes)
+		: [];
+
+	if (!timeSlot || !startTimes.length) return;
+
+	selectedBookingSlot = {
+		dateKey,
+		label: timeSlot.label,
+		startTime: startTimes[0]
+	};
+	bookingElements.form.reset();
+	bookingElements.startTime.innerHTML = startTimes
+		.map((startTime) => `<option value="${startTime}">${startTime}</option>`)
+		.join("");
+	bookingElements.copyStatus.textContent = "";
+	updateSelectedSlotText();
 	synchronizeConditionalFields();
+	showBookingStep("first-time");
 	bookingElements.dialog.showModal();
 }
 
@@ -180,7 +230,7 @@ function createBookingMessage() {
 		"您好，我想詢問美甲預約 💅",
 		"",
 		`預約日期：${formatSelectedDate(selectedBookingSlot.dateKey)}`,
-		`預約時段：${selectedBookingSlot.time}`,
+		`預約時段：${selectedBookingSlot.label} ${selectedBookingSlot.startTime}`,
 		`姓名：${getFormText("customerName")}`,
 		"",
 		`1. 施作部位：${serviceArea}`,
@@ -294,7 +344,7 @@ export function initializeBooking() {
 
 		openBookingDialog(
 			slotButton.dataset.bookingDate,
-			slotButton.dataset.bookingTime
+			slotButton.dataset.bookingSlot
 		);
 	});
 
@@ -308,6 +358,15 @@ export function initializeBooking() {
 	bookingElements.serviceArea.addEventListener("change", synchronizeConditionalFields);
 	bookingElements.removal.addEventListener("change", synchronizeConditionalFields);
 	bookingElements.footRemoval.addEventListener("change", synchronizeConditionalFields);
+	bookingElements.startTime.addEventListener("change", () => {
+		if (!selectedBookingSlot) return;
+		selectedBookingSlot.startTime = bookingElements.startTime.value;
+		updateSelectedSlotText();
+	});
+	bookingElements.firstTimeYes.addEventListener("click", () => showBookingStep("guide"));
+	bookingElements.firstTimeNo.addEventListener("click", () => showBookingStep("form"));
+	bookingElements.guideBack.addEventListener("click", () => showBookingStep("first-time"));
+	bookingElements.guideRead.addEventListener("click", () => showBookingStep("form"));
 	bookingElements.form.addEventListener("submit", handleBookingFormSubmit);
 	bookingElements.editButton.addEventListener("click", () => {
 		setResultVisibility(false);

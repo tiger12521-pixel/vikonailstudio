@@ -205,10 +205,11 @@ app.get("/api/booking", async (request, response) => {
 		for (let index = 0; index < 7; index += 1) {
 			const date = new Date(weekStart);
 			date.setDate(weekStart.getDate() + index);
+			const isSaturday = date.getDay() === 6;
 			bookingData[formatDateKey(date)] = {
-				morning: true,
-				afternoon: true,
-				evening: true
+				morning: !isSaturday,
+				afternoon: !isSaturday,
+				evening: !isSaturday
 			};
 		}
 
