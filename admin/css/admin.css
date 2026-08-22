@@ -86,3 +86,39 @@ button, input, textarea { font: inherit; }
 .retouch-detail-adjustments { grid-column: 1 / -1; padding: 14px !important; border: 1px solid var(--color-border) !important; border-radius: 12px; background: #fffafa; }.retouch-detail-adjustments > p { margin: 0 0 12px; color: var(--color-muted); font-size: 13px; line-height: 1.6; }.retouch-detail-sliders { display: grid; gap: 10px; }.retouch-detail-sliders label { display: grid; grid-template-columns: 40px 1fr 44px; align-items: center; gap: 8px; font-size: 13px; }.retouch-detail-sliders input { accent-color: var(--color-brand); }.retouch-detail-sliders output { color: var(--color-brand-dark); font-weight: 700; text-align: right; }
 
 .watermark-sliders label { grid-template-columns: 40px 1fr 34px; }.watermark-style-options em { font-family: "Allura", cursive; font-size: 28px; }
+
+@media (max-width: 760px) {
+	.retouch-workspace {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.retouch-result {
+		order: 1;
+		position: sticky;
+		top: 8px;
+		z-index: 2;
+		min-height: 150px;
+		max-height: 42svh;
+		margin: 0;
+		box-shadow: 0 10px 24px rgba(93, 66, 72, 0.16);
+	}
+
+	.retouch-result img {
+		width: 100%;
+		max-height: 40svh;
+		object-fit: contain;
+	}
+
+	.retouch-controls {
+		order: 2;
+	}
+
+	.retouch-actions {
+		order: 3;
+	}
+
+	.retouch-workspace > .form-message {
+		order: 4;
+	}
+}
