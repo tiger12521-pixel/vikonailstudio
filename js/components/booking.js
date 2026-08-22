@@ -29,12 +29,15 @@ const bookingElements = {
 	dialog: document.getElementById("bookingDialog"),
 	dialogClose: document.getElementById("bookingDialogClose"),
 	dialogCancel: document.getElementById("bookingDialogCancel"),
-	dialogTitle: document.getElementById("bookingDialogTitle"),
 	selectedSlot: document.getElementById("bookingDialogSelected"),
-	firstTimeStep: document.getElementById("bookingFirstTimeStep"),
+	firstTimeDialog: document.getElementById("bookingFirstTimeDialog"),
+	firstTimeClose: document.getElementById("bookingFirstTimeClose"),
+	firstTimeSelected: document.getElementById("bookingFirstTimeSelected"),
 	firstTimeYes: document.getElementById("bookingFirstTimeYes"),
 	firstTimeNo: document.getElementById("bookingFirstTimeNo"),
-	guidePreview: document.getElementById("bookingGuidePreview"),
+	guideDialog: document.getElementById("bookingGuideDialog"),
+	guideClose: document.getElementById("bookingGuideClose"),
+	guideSelected: document.getElementById("bookingGuideSelected"),
 	guideBack: document.getElementById("bookingGuideBack"),
 	guideRead: document.getElementById("bookingGuideRead"),
 	startTime: document.getElementById("bookingStartTime"),
@@ -119,20 +122,6 @@ function setResultVisibility(isVisible) {
 	bookingElements.messageResult.hidden = !isVisible;
 }
 
-function showBookingStep(step) {
-	const isFirstTimeStep = step === "first-time";
-	const isGuideStep = step === "guide";
-	const isFormStep = step === "form";
-
-	bookingElements.firstTimeStep.hidden = !isFirstTimeStep;
-	bookingElements.guidePreview.hidden = !isGuideStep;
-	bookingElements.form.hidden = !isFormStep;
-	bookingElements.messageResult.hidden = true;
-	bookingElements.dialogTitle.textContent = isGuideStep
-		? "預約須知"
-		: (isFormStep ? "填寫預約詢問" : "預約詢問");
-}
-
 function synchronizeConditionalFields() {
 	const isBoth = bookingElements.serviceArea.value === "手足皆做";
 	const hasRemoval = bookingElements.removal.value !== "無卸甲";
@@ -151,8 +140,32 @@ function synchronizeConditionalFields() {
 }
 
 function updateSelectedSlotText() {
-	bookingElements.selectedSlot.textContent =
-		`詢問時段：${formatSelectedDate(selectedBookingSlot.dateKey)} ${selectedBookingSlot.label} ${selectedBookingSlot.startTime}`;
+	const text = `詢問時段：${formatSelectedDate(selectedBookingSlot.dateKey)} ${selectedBookingSlot.label} ${selectedBookingSlot.startTime}`;
+	bookingElements.selectedSlot.textContent = text;
+	bookingElements.firstTimeSelected.textContent = text;
+	bookingElements.guideSelected.textContent = text;
+}
+
+function populateStartTimeOptions() {
+	if (!selectedBookingSlot) return;
+
+	const startTimes = selectedBookingSlot.startTimes;
+	const currentValue = startTimes.includes(selectedBookingSlot.startTime)
+		? selectedBookingSlot.startTime
+		: startTimes[0];
+
+	bookingElements.startTime.innerHTML = startTimes
+		.map((startTime) => `<option value="${startTime}">${startTime}</option>`)
+		.join("");
+	bookingElements.startTime.value = currentValue;
+	selectedBookingSlot.startTime = currentValue;
+	updateSelectedSlotText();
+}
+
+function openBookingForm() {
+	populateStartTimeOptions();
+	setResultVisibility(false);
+	bookingElements.dialog.showModal();
 }
 
 function getAvailableStartTimes(dateKey, startTimes, now = new Date()) {
@@ -175,17 +188,15 @@ function openBookingDialog(dateKey, slotKey) {
 	selectedBookingSlot = {
 		dateKey,
 		label: timeSlot.label,
-		startTime: startTimes[0]
+		startTime: startTimes[0],
+		startTimes
 	};
 	bookingElements.form.reset();
-	bookingElements.startTime.innerHTML = startTimes
-		.map((startTime) => `<option value="${startTime}">${startTime}</option>`)
-		.join("");
+	populateStartTimeOptions();
 	bookingElements.copyStatus.textContent = "";
 	updateSelectedSlotText();
 	synchronizeConditionalFields();
-	showBookingStep("first-time");
-	bookingElements.dialog.showModal();
+	bookingElements.firstTimeDialog.showModal();
 }
 
 function closeBookingDialog() {
@@ -355,6 +366,8 @@ export function initializeBooking() {
 			closeBookingDialog();
 		}
 	});
+	bookingElements.firstTimeClose.addEventListener("click", () => bookingElements.firstTimeDialog.close());
+	bookingElements.guideClose.addEventListener("click", () => bookingElements.guideDialog.close());
 	bookingElements.serviceArea.addEventListener("change", synchronizeConditionalFields);
 	bookingElements.removal.addEventListener("change", synchronizeConditionalFields);
 	bookingElements.footRemoval.addEventListener("change", synchronizeConditionalFields);
@@ -363,10 +376,22 @@ export function initializeBooking() {
 		selectedBookingSlot.startTime = bookingElements.startTime.value;
 		updateSelectedSlotText();
 	});
-	bookingElements.firstTimeYes.addEventListener("click", () => showBookingStep("guide"));
-	bookingElements.firstTimeNo.addEventListener("click", () => showBookingStep("form"));
-	bookingElements.guideBack.addEventListener("click", () => showBookingStep("first-time"));
-	bookingElements.guideRead.addEventListener("click", () => showBookingStep("form"));
+	bookingElements.firstTimeYes.addEventListener("click", () => {
+		bookingElements.firstTimeDialog.close();
+		bookingElements.guideDialog.showModal();
+	});
+	bookingElements.firstTimeNo.addEventListener("click", () => {
+		bookingElements.firstTimeDialog.close();
+		openBookingForm();
+	});
+	bookingElements.guideBack.addEventListener("click", () => {
+		bookingElements.guideDialog.close();
+		bookingElements.firstTimeDialog.showModal();
+	});
+	bookingElements.guideRead.addEventListener("click", () => {
+		bookingElements.guideDialog.close();
+		openBookingForm();
+	});
 	bookingElements.form.addEventListener("submit", handleBookingFormSubmit);
 	bookingElements.editButton.addEventListener("click", () => {
 		setResultVisibility(false);
