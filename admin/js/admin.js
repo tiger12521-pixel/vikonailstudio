@@ -1,5 +1,5 @@
 import { ensureGalleryLoaded, initializeGalleryAdmin, openGalleryEditorWithImage } from "./gallery-admin.js";
-import { initializeRetouchTool } from "./retouch-tool.js";
+import { initializeRetouchTool } from "./retouch-tool.js?v=1.4.4";
 
 const API_URL = "/api/admin/promotions";
 const DEFAULT_LINE_URL = "https://lin.ee/OMhvyb7";

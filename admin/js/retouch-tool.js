@@ -305,13 +305,26 @@ function createDetailControls() {
 }
 
 function downloadOutput() {
-	if (!state.outputFile) return;
+	if (!state.outputFile) {
+		setMessage("\u8acb\u5148\u88fd\u4f5c\u4f5c\u54c1\u7167\uff0c\u518d\u4e0b\u8f09\u6210\u54c1\u3002", true);
+		return;
+	}
+
+	if (/(?:\bline\/|\bline\b)/i.test(navigator.userAgent)) {
+		setMessage("\u76ee\u524d\u70ba LINE \u5167\u5efa\u700f\u89bd\u5668\uff0c\u8acb\u9ede\u53f3\u4e0a\u89d2 \u22ef \u5f8c\u9078\u64c7 Chrome \u6216 Safari \u958b\u555f\uff0c\u518d\u4e0b\u8f09\u4f5c\u54c1\u7167\u3002", true);
+		return;
+	}
+
 	const url = URL.createObjectURL(state.outputFile);
 	const link = document.createElement("a");
 	link.href = url;
-	link.download = state.outputFile.name;
+	link.download = state.outputFile.name || "nail-story-photo.jpg";
+	link.style.display = "none";
+	link.setAttribute("aria-hidden", "true");
+	document.body.append(link);
 	link.click();
-	setTimeout(() => URL.revokeObjectURL(url), 1000);
+	link.remove();
+	setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 export function initializeRetouchTool({ openGalleryWithImage }) {
