@@ -38,8 +38,8 @@ export async function onRequestGet(context) {
         return;
       }
 
-      const hasBooking =
-        event.description && event.description.trim().length > 0;
+      const description = event.description?.trim();
+      const hasBooking = Boolean(description && description !== ".");
 
       if (!hasBooking) {
         return;

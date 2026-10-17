@@ -216,7 +216,8 @@ app.get("/api/booking", async (request, response) => {
 		const events = await getCalendarEvents(weekStart, weekEnd);
 		events.forEach((event) => {
 			if (!event.start || !event.start.dateTime) return;
-			if (!event.description || !event.description.trim()) return;
+			const description = event.description?.trim();
+			if (!description || description === ".") return;
 			const startDate = new Date(event.start.dateTime);
 			const dateKey = formatDateKey(startDate);
 			const slotName = getSlotName(startDate);
