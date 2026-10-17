@@ -20,7 +20,10 @@ export async function onRequestGet(context) {
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate() + i);
 
-      const isSaturday = date.getDay() === 6;
+      const isSaturday = new Intl.DateTimeFormat("en-US", {
+        timeZone: TIME_ZONE,
+        weekday: "short",
+      }).format(date) === "Sat";
       bookingData[formatDateKey(date)] = {
         morning: !isSaturday,
         afternoon: !isSaturday,
